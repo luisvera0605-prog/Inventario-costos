@@ -12,15 +12,15 @@ const BASE = `${import.meta.env.VITE_DATAVERSE_URL}/api/data/v9.2`;
 // ─── PREFIJOS cre53_ (publicador activo en el entorno) ───────────────────────
 // Tablas OData (plural en Dataverse = nombre lógico + 's')
 const E_BODEGA       = 'cre53_bodegas';
-const E_MP           = 'cre53_materiaprimaes';   // Dataverse pluraliza con 'es' palabras que terminan en 'a'
+const E_MP           = 'cre53_materiaprimas';   // Dataverse pluraliza con 'es' palabras que terminan en 'a'
 const E_SKU          = 'cre53_skus';
 const E_PERIODO      = 'cre53_periodos';
 const E_RECETA       = 'cre53_recetas';
 const E_INV_MP       = 'cre53_inventariomps';
-const E_INV_PT       = 'cre53_inventarioptsets'; // verificar plural real
+const E_INV_PT       = 'cre53_inventariopts'; // verificar plural real
 const E_PROD         = 'cre53_produccions';
 const E_COMPRA       = 'cre53_compramps';
-const E_VENTA        = 'cre53_ventainventariosets';
+const E_VENTA        = 'cre53_ventainventarioses';
 const E_COSTEO       = 'cre53_costeos';
 
 // Campos ID por tabla
