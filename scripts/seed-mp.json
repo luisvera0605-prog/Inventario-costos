@@ -1,0 +1,17 @@
+[
+  {"fdt_codigo":"1.0001","fdt_descripcion":"AZUCAR ESTANDAR","fdt_alias":"AZUCAR","fdt_grupo":1,"fdt_unidad_compra":"KGS","fdt_factor_conversion":25,"fdt_unidad_almacen":"BULTO","fdt_precio_base":15.4,"fdt_activo":true},
+  {"fdt_codigo":"1.0002","fdt_descripcion":"ARROZ MEDIO GRANO","fdt_alias":"ARROZ","fdt_grupo":1,"fdt_unidad_compra":"KGS","fdt_factor_conversion":25,"fdt_unidad_almacen":"BULTO","fdt_precio_base":10.1,"fdt_activo":true},
+  {"fdt_codigo":"1.0003","fdt_descripcion":"CANELA H2","fdt_alias":"CANELA","fdt_grupo":1,"fdt_unidad_compra":"KGS","fdt_factor_conversion":1,"fdt_unidad_almacen":"KGS","fdt_precio_base":258.75,"fdt_activo":true},
+  {"fdt_codigo":"1.0005","fdt_descripcion":"SABOR CANELA LIQUIDA","fdt_alias":"CANELA LIQ","fdt_grupo":1,"fdt_unidad_compra":"LT","fdt_factor_conversion":1,"fdt_unidad_almacen":"LT","fdt_precio_base":397.93,"fdt_activo":true},
+  {"fdt_codigo":"1.0006","fdt_descripcion":"XHANTAN GUM MALLA 80","fdt_alias":"XHANTAN GUM","fdt_grupo":1,"fdt_unidad_compra":"KGS","fdt_factor_conversion":1,"fdt_unidad_almacen":"KGS","fdt_precio_base":65.26,"fdt_activo":true},
+  {"fdt_codigo":"1.0007","fdt_descripcion":"BENZOATO DE SODIO EDF","fdt_alias":"BENZOATO","fdt_grupo":1,"fdt_unidad_compra":"KGS","fdt_factor_conversion":1,"fdt_unidad_almacen":"KGS","fdt_precio_base":75.41,"fdt_activo":true},
+  {"fdt_codigo":"1.0008","fdt_descripcion":"SORBATO DE POTASIO GRANULAR","fdt_alias":"SORBATO","fdt_grupo":1,"fdt_unidad_compra":"KGS","fdt_factor_conversion":1,"fdt_unidad_almacen":"KGS","fdt_precio_base":58.65,"fdt_activo":true},
+  {"fdt_codigo":"1.0009","fdt_descripcion":"BIOXIDO DE TITANIO FG","fdt_alias":"BIOXIDO","fdt_grupo":1,"fdt_unidad_compra":"KGS","fdt_factor_conversion":1,"fdt_unidad_almacen":"KGS","fdt_precio_base":95.78,"fdt_activo":true},
+  {"fdt_codigo":"1.0010","fdt_descripcion":"ALCOHOL DEL 96%","fdt_alias":"ALCOHOL","fdt_grupo":1,"fdt_unidad_compra":"LT","fdt_factor_conversion":1,"fdt_unidad_almacen":"LT","fdt_precio_base":36.2,"fdt_activo":true},
+  {"fdt_codigo":"1.0011","fdt_descripcion":"VAINILLINA CHINA","fdt_alias":"VAINILLINA","fdt_grupo":1,"fdt_unidad_compra":"KGS","fdt_factor_conversion":1,"fdt_unidad_almacen":"KGS","fdt_precio_base":320.0,"fdt_activo":true},
+  {"fdt_codigo":"2.0003","fdt_descripcion":"BOTELLA FLOR TABASCO 700 ML","fdt_alias":"BOTELLA 700","fdt_grupo":2,"fdt_unidad_compra":"PZAS","fdt_factor_conversion":1,"fdt_unidad_almacen":"PZAS","fdt_precio_base":2.65,"fdt_activo":true},
+  {"fdt_codigo":"2.0004","fdt_descripcion":"BOTELLA FLOR TABASCO 1 L","fdt_alias":"BOTELLA 1L","fdt_grupo":2,"fdt_unidad_compra":"PZAS","fdt_factor_conversion":1,"fdt_unidad_almacen":"PZAS","fdt_precio_base":3.29,"fdt_activo":true},
+  {"fdt_codigo":"2.0005","fdt_descripcion":"BOTELLA FLOR TABASCO 2 L","fdt_alias":"BOTELLA 2L","fdt_grupo":2,"fdt_unidad_compra":"PZAS","fdt_factor_conversion":1,"fdt_unidad_almacen":"PZAS","fdt_precio_base":4.13,"fdt_activo":true},
+  {"fdt_codigo":"2.0009","fdt_descripcion":"TAPA ROSCA #28","fdt_alias":"TAPA 28","fdt_grupo":2,"fdt_unidad_compra":"PZAS","fdt_factor_conversion":1,"fdt_unidad_almacen":"PZAS","fdt_precio_base":0.2,"fdt_activo":true},
+  {"fdt_codigo":"2.0030","fdt_descripcion":"ETIQUETA HORCHATA 700 ML","fdt_alias":"ETQ 700","fdt_grupo":2,"fdt_unidad_compra":"PZAS","fdt_factor_conversion":1500,"fdt_unidad_almacen":"ROLLO","fdt_precio_base":0.4642,"fdt_activo":true}
+]
