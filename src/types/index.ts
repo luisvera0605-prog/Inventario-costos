@@ -1,192 +1,175 @@
-// ─── CATÁLOGOS ────────────────────────────────────────────────────────────────
+// Dataverse uses _fieldname_value for lookup fields in OData responses
+// Forms and internal state use shorter aliases for readability
 
 export interface Bodega {
-  fdt_bodegaid: string;
-  fdt_nombre: string;
-  fdt_tipo: 1 | 2;
-  fdt_ubicacion?: string;
-  fdt_activo: boolean;
+  cre53_bodegaid: string;
+  cre53_nombre: string;
+  cre53_tipo: 1 | 2;
+  cre53_ubicacion?: string;
+  cre53_activo: boolean;
 }
 
 export interface MateriaPrima {
-  fdt_mpid: string;
-  fdt_codigo: string;
-  fdt_descripcion: string;
-  fdt_alias?: string;
-  fdt_grupo: 1 | 2 | 3;
-  fdt_unidad_compra: string;
-  fdt_factor_conversion: number;
-  fdt_unidad_almacen: string;
-  fdt_unidad_venta?: string;
-  fdt_precio_base: number;
-  fdt_activo: boolean;
+  cre53_materiaprimaid: string;
+  cre53_codigo: string;
+  cre53_descripcion: string;
+  cre53_alias?: string;
+  cre53_grupo: 1 | 2 | 3;
+  cre53_unidad_compra: string;
+  cre53_factor_conversion: number;
+  cre53_unidad_almacen: string;
+  cre53_unidad_venta?: string;
+  cre53_precio_base: number;
+  cre53_activo: boolean;
 }
 
 export interface SKU {
-  fdt_skuid: string;
-  fdt_codigo: string;
-  fdt_presentacion: string;
-  fdt_linea: 1 | 2;
-  fdt_mililitros: number;
-  fdt_tipo_empaque: 1 | 2 | 3 | 4;
-  fdt_codigo_barras?: string;
-  fdt_costo_estandar?: number;
-  fdt_activo: boolean;
+  cre53_skuid: string;
+  cre53_codigo: string;
+  cre53_presentacion: string;
+  cre53_linea: 1 | 2;
+  cre53_mililitros: number;
+  cre53_tipo_empaque: 1 | 2 | 3 | 4;
+  cre53_codigo_barras?: string;
+  cre53_costo_estandar?: number;
+  cre53_activo: boolean;
 }
 
 export interface Periodo {
-  fdt_periodoid: string;
-  fdt_nombre: string;
-  fdt_anio: number;
-  fdt_mes: number;
-  fdt_fecha_inicio: string;
-  fdt_fecha_corte: string;
-  fdt_cerrado: boolean;
+  cre53_periodoid: string;
+  cre53_nombre: string;
+  cre53_anio: number;
+  cre53_mes: number;
+  cre53_fecha_inicio: string;
+  cre53_fecha_corte: string;
+  cre53_cerrado: boolean;
 }
 
 export interface LineaReceta {
-  fdt_recetaid: string;
-  fdt_sku: string;
-  fdt_mp: string;
-  fdt_tipo_insumo: 1 | 2 | 3;
-  fdt_qty_por_litro: number;
-  fdt_qty_por_botella: number;
-  fdt_unidad: string;
-  fdt_activo: boolean;
+  cre53_recetaid: string;
+  // Lookup fields (OData _value format)
+  _cre53_sku_value: string;
+  _cre53_mp_value: string;
+  // Aliases for forms
+  cre53_sku?: string;
+  cre53_mp?: string;
+  cre53_tipo_insumo: 1 | 2 | 3;
+  cre53_qty_por_litro: number;
+  cre53_qty_por_botella: number;
+  cre53_unidad: string;
+  cre53_activo: boolean;
   _sku?: SKU;
   _mp?: MateriaPrima;
 }
 
-// ─── TRANSACCIONAL ────────────────────────────────────────────────────────────
-
 export interface InventarioMP {
-  fdt_inventario_mpid: string;
-  fdt_periodo: string;
-  fdt_bodega: string;
-  fdt_mp: string;
-  fdt_cantidad_base: number;
-  fdt_cantidad_almacen: number;
-  fdt_precio_unitario: number;
-  fdt_valor: number;
-  fdt_fecha_conteo: string;
-  fdt_capturado_por?: string;
-  fdt_observaciones?: string;
+  cre53_inventariompid: string;
+  _cre53_periodo_value: string;
+  _cre53_bodega_value: string;
+  _cre53_mp_value: string;
+  // Aliases
+  cre53_periodo?: string;
+  cre53_bodega?: string;
+  cre53_mp?: string;
+  cre53_cantidad_base: number;
+  cre53_cantidad_almacen: number;
+  cre53_precio_unitario: number;
+  cre53_valor: number;
+  cre53_fecha_conteo: string;
+  cre53_capturado_por?: string;
+  cre53_observaciones?: string;
   _mp?: MateriaPrima;
   _bodega?: Bodega;
 }
 
 export interface InventarioPT {
-  fdt_inventario_ptid: string;
-  fdt_periodo: string;
-  fdt_bodega: string;
-  fdt_sku: string;
-  fdt_cantidad: number;
-  fdt_costo_unitario?: number;
-  fdt_valor?: number;
-  fdt_fecha_conteo: string;
-  fdt_capturado_por?: string;
+  cre53_inventarioptid: string;
+  _cre53_periodo_value: string;
+  _cre53_bodega_value: string;
+  _cre53_sku_value: string;
+  cre53_periodo?: string;
+  cre53_bodega?: string;
+  cre53_sku?: string;
+  cre53_cantidad: number;
+  cre53_costo_unitario?: number;
+  cre53_valor?: number;
+  cre53_fecha_conteo: string;
+  cre53_capturado_por?: string;
   _sku?: SKU;
   _bodega?: Bodega;
 }
 
 export interface Produccion {
-  fdt_produccionid: string;
-  fdt_periodo: string;
-  fdt_sku: string;
-  fdt_cantidad_botellas: number;
-  fdt_litros?: number;
-  fdt_semana?: number;
-  fdt_turno?: 1 | 2;
-  fdt_fecha: string;
+  cre53_produccionid: string;
+  _cre53_periodo_value: string;
+  _cre53_sku_value: string;
+  cre53_periodo?: string;
+  cre53_sku?: string;
+  cre53_cantidad_botellas: number;
+  cre53_litros?: number;
+  cre53_semana?: number;
+  cre53_turno?: 1 | 2;
+  cre53_fecha: string;
   _sku?: SKU;
 }
 
 export interface CompraMP {
-  fdt_compra_mpid: string;
-  fdt_periodo: string;
-  fdt_mp: string;
-  fdt_cantidad_base: number;
-  fdt_precio_unitario: number;
-  fdt_valor: number;
-  fdt_proveedor?: string;
-  fdt_fecha: string;
-  fdt_folio?: string;
+  cre53_comprampid: string;
+  _cre53_periodo_value: string;
+  _cre53_mp_value: string;
+  cre53_periodo?: string;
+  cre53_mp?: string;
+  cre53_cantidad_base: number;
+  cre53_precio_unitario: number;
+  cre53_valor: number;
+  cre53_proveedor?: string;
+  cre53_fecha: string;
+  cre53_folio?: string;
   _mp?: MateriaPrima;
 }
 
 export interface Venta {
-  fdt_ventaid: string;
-  fdt_periodo: string;
-  fdt_bodega: string;
-  fdt_sku: string;
-  fdt_cantidad: number;
-  fdt_precio_venta?: number;
-  fdt_valor?: number;
-  fdt_fecha: string;
-  fdt_folio?: string;
+  cre53_ventainventariosid: string;
+  _cre53_periodo_value: string;
+  _cre53_bodega_value: string;
+  _cre53_sku_value: string;
+  cre53_periodo?: string;
+  cre53_bodega?: string;
+  cre53_sku?: string;
+  cre53_cantidad: number;
+  cre53_precio_venta?: number;
+  cre53_valor?: number;
+  cre53_fecha: string;
+  cre53_folio?: string;
   _sku?: SKU;
   _bodega?: Bodega;
 }
 
 export interface Costeo {
-  fdt_costeoid: string;
-  fdt_periodo: string;
-  fdt_sku: string;
-  fdt_costo_mp: number;
-  fdt_costo_mod: number;
-  fdt_costo_empaque: number;
-  fdt_costo_embalaje: number;
-  fdt_costo_total: number;
+  cre53_costeoid: string;
+  _cre53_periodo_value: string;
+  _cre53_sku_value: string;
+  cre53_costo_mp: number;
+  cre53_costo_mod: number;
+  cre53_costo_empaque: number;
+  cre53_costo_embalaje: number;
+  cre53_costo_total: number;
   _sku?: SKU;
 }
 
-// ─── FORMS ───────────────────────────────────────────────────────────────────
-
-export type BodegaForm = Omit<Bodega, 'fdt_bodegaid'>;
-export type MPForm = Omit<MateriaPrima, 'fdt_mpid'>;
-export type SKUForm = Omit<SKU, 'fdt_skuid'>;
-export type PeriodoForm = Omit<Periodo, 'fdt_periodoid'>;
-export type RecetaForm = Omit<LineaReceta, 'fdt_recetaid' | '_sku' | '_mp'>;
-
-export interface InvMPForm {
-  fdt_periodo: string;
-  fdt_bodega: string;
-  fdt_mp: string;
-  fdt_cantidad_base: number;
-  fdt_cantidad_almacen: number;
-  fdt_precio_unitario: number;
-  fdt_valor: number;
-  fdt_fecha_conteo: string;
-  fdt_capturado_por?: string;
-  fdt_observaciones?: string;
-}
-
-export interface InvPTForm {
-  fdt_periodo: string;
-  fdt_bodega: string;
-  fdt_sku: string;
-  fdt_cantidad: number;
-  fdt_costo_unitario?: number;
-  fdt_valor?: number;
-  fdt_fecha_conteo: string;
-  fdt_capturado_por?: string;
-}
-
-export type ProduccionForm = Omit<Produccion, 'fdt_produccionid' | '_sku'>;
-export interface CompraForm {
-  fdt_periodo: string;
-  fdt_mp: string;
-  fdt_cantidad_base: number;
-  fdt_precio_unitario: number;
-  fdt_valor: number;
-  fdt_proveedor?: string;
-  fdt_fecha: string;
-  fdt_folio?: string;
-}
-export type VentaForm = Omit<Venta, 'fdt_ventaid' | '_sku' | '_bodega'>;
+// ─── FORMS (usan Record para flexibilidad) ────────────────────────────────────
+export type BodegaForm = Omit<Bodega, 'cre53_bodegaid'>;
+export type MPForm = Omit<MateriaPrima, 'cre53_materiaprimaid'>;
+export type SKUForm = Omit<SKU, 'cre53_skuid'>;
+export type PeriodoForm = Omit<Periodo, 'cre53_periodoid'>;
+export type RecetaForm = Omit<LineaReceta, 'cre53_recetaid' | '_sku' | '_mp'>;
+export type InvMPForm = Omit<InventarioMP, 'cre53_inventariompid' | '_mp' | '_bodega'>;
+export type InvPTForm = Omit<InventarioPT, 'cre53_inventarioptid' | '_sku' | '_bodega'>;
+export type ProduccionForm = Omit<Produccion, 'cre53_produccionid' | '_sku'>;
+export type CompraForm = Omit<CompraMP, 'cre53_comprampid' | '_mp'>;
+export type VentaForm = Omit<Venta, 'cre53_ventainventariosid' | '_sku' | '_bodega'>;
 
 // ─── LABELS ──────────────────────────────────────────────────────────────────
-
 export const TIPO_BODEGA_LABEL: Record<number, string> = { 1: 'MP + PT', 2: 'Solo PT' };
 export const GRUPO_MP_LABEL: Record<number, string> = { 1: 'Materia Prima', 2: 'Empaque', 3: 'Embalaje' };
 export const LINEA_LABEL: Record<number, string> = { 1: 'Flor de Tabasco', 2: 'Mosaico' };

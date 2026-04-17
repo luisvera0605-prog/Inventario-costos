@@ -12,8 +12,8 @@ const EMPAQUES = [1, 2, 3, 4] as const;
 const ML_OPTIONS = [250, 500, 700, 1000, 2000, 3785];
 
 const defaultForm = (): SKUForm => ({
-  fdt_codigo: '', fdt_presentacion: '', fdt_linea: 1, fdt_mililitros: 700,
-  fdt_tipo_empaque: 1, fdt_codigo_barras: '', fdt_costo_estandar: 0, fdt_activo: true,
+  cre53_codigo: '', cre53_presentacion: '', cre53_linea: 1, cre53_mililitros: 700,
+  cre53_tipo_empaque: 1, cre53_codigo_barras: '', cre53_costo_estandar: 0, cre53_activo: true,
 });
 
 export default function SKUsPage() {
@@ -29,23 +29,23 @@ export default function SKUsPage() {
 
   const filtered = useMemo(() => skus.filter(s => {
     const q = search.toLowerCase();
-    const matchSearch = !q || s.fdt_codigo.toLowerCase().includes(q) || s.fdt_presentacion.toLowerCase().includes(q);
-    return matchSearch && (lineaFilter === '' || s.fdt_linea === lineaFilter);
+    const matchSearch = !q || s.cre53_codigo.toLowerCase().includes(q) || s.cre53_presentacion.toLowerCase().includes(q);
+    return matchSearch && (lineaFilter === '' || s.cre53_linea === lineaFilter);
   }), [skus, search, lineaFilter]);
 
   function openEdit(s: SKU) {
     setEditing(s);
-    setForm({ fdt_codigo: s.fdt_codigo, fdt_presentacion: s.fdt_presentacion, fdt_linea: s.fdt_linea,
-      fdt_mililitros: s.fdt_mililitros, fdt_tipo_empaque: s.fdt_tipo_empaque,
-      fdt_codigo_barras: s.fdt_codigo_barras ?? '', fdt_costo_estandar: s.fdt_costo_estandar ?? 0, fdt_activo: s.fdt_activo });
+    setForm({ cre53_codigo: s.cre53_codigo, cre53_presentacion: s.cre53_presentacion, cre53_linea: s.cre53_linea,
+      cre53_mililitros: s.cre53_mililitros, cre53_tipo_empaque: s.cre53_tipo_empaque,
+      cre53_codigo_barras: s.cre53_codigo_barras ?? '', cre53_costo_estandar: s.cre53_costo_estandar ?? 0, cre53_activo: s.cre53_activo });
     setModalOpen(true);
   }
 
-  const f = (k: keyof SKUForm, v: any) => setForm(p => ({ ...p, [k]: v }));
+  const f = (k: string, v: any) => setForm(p => ({ ...p, [k]: v }));
   const saving = create.isPending || update.isPending;
 
   async function handleSave() {
-    if (editing) await update.mutateAsync({ id: editing.fdt_skuid, d: form });
+    if (editing) await update.mutateAsync({ id: editing.cre53_skuid, d: form });
     else await create.mutateAsync(form);
     setModalOpen(false);
   }
@@ -53,7 +53,7 @@ export default function SKUsPage() {
   // Group by mililitros for display
   const byML = useMemo(() => {
     const groups: Record<number, SKU[]> = {};
-    filtered.forEach(s => { if (!groups[s.fdt_mililitros]) groups[s.fdt_mililitros] = []; groups[s.fdt_mililitros].push(s); });
+    filtered.forEach(s => { if (!groups[s.cre53_mililitros]) groups[s.cre53_mililitros] = []; groups[s.cre53_mililitros].push(s); });
     return groups;
   }, [filtered]);
 
@@ -77,15 +77,15 @@ export default function SKUsPage() {
         <div className="card p-0 overflow-hidden">
           <DataTable
             data={filtered}
-            rowKey={r => r.fdt_skuid}
+            rowKey={r => r.cre53_skuid}
             columns={[
-              { key: 'fdt_codigo', header: 'Código SKU', sortable: true, width: '120px' },
-              { key: 'fdt_presentacion', header: 'Presentación', sortable: true },
-              { key: 'fdt_linea', header: 'Línea', render: r => <Badge label={LINEA_LABEL[r.fdt_linea]} variant={r.fdt_linea === 1 ? 'info' : 'warning'} /> },
-              { key: 'fdt_mililitros', header: 'ml', align: 'right', sortable: true, render: r => `${r.fdt_mililitros} ml` },
-              { key: 'fdt_tipo_empaque', header: 'Empaque', render: r => <Badge label={TIPO_EMPAQUE_LABEL[r.fdt_tipo_empaque]} variant="gray" /> },
-              { key: 'fdt_codigo_barras', header: 'Cód. Barras', render: r => <span className="font-mono text-xs">{r.fdt_codigo_barras || '—'}</span> },
-              { key: 'fdt_costo_estandar', header: 'Costo Est.', align: 'right', render: r => r.fdt_costo_estandar ? `$${r.fdt_costo_estandar.toFixed(4)}` : '—' },
+              { key: 'cre53_codigo', header: 'Código SKU', sortable: true, width: '120px' },
+              { key: 'cre53_presentacion', header: 'Presentación', sortable: true },
+              { key: 'cre53_linea', header: 'Línea', render: r => <Badge label={LINEA_LABEL[r.cre53_linea]} variant={r.cre53_linea === 1 ? 'info' : 'warning'} /> },
+              { key: 'cre53_mililitros', header: 'ml', align: 'right', sortable: true, render: r => `${r.cre53_mililitros} ml` },
+              { key: 'cre53_tipo_empaque', header: 'Empaque', render: r => <Badge label={TIPO_EMPAQUE_LABEL[r.cre53_tipo_empaque]} variant="gray" /> },
+              { key: 'cre53_codigo_barras', header: 'Cód. Barras', render: r => <span className="font-mono text-xs">{r.cre53_codigo_barras || '—'}</span> },
+              { key: 'cre53_costo_estandar', header: 'Costo Est.', align: 'right', render: r => r.cre53_costo_estandar ? `$${r.cre53_costo_estandar.toFixed(4)}` : '—' },
               {
                 key: 'actions', header: '', align: 'right', width: '80px',
                 render: r => (
@@ -105,29 +105,29 @@ export default function SKUsPage() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="form-label">Código SKU *</label>
-              <input className="form-input font-mono" value={form.fdt_codigo} onChange={e => f('fdt_codigo', e.target.value)} placeholder="F03010101" />
+              <input className="form-input font-mono" value={form.cre53_codigo} onChange={e => f('cre53_codigo', e.target.value)} placeholder="F03010101" />
             </div>
             <div>
               <label className="form-label">Línea *</label>
-              <select className="form-select" value={form.fdt_linea} onChange={e => f('fdt_linea', Number(e.target.value))}>
+              <select className="form-select" value={form.cre53_linea} onChange={e => f('cre53_linea', Number(e.target.value))}>
                 {LINEAS.map(l => <option key={l} value={l}>{LINEA_LABEL[l]}</option>)}
               </select>
             </div>
           </div>
           <div>
             <label className="form-label">Presentación *</label>
-            <input className="form-input" value={form.fdt_presentacion} onChange={e => f('fdt_presentacion', e.target.value)} placeholder="Flor 700 ml" />
+            <input className="form-input" value={form.cre53_presentacion} onChange={e => f('cre53_presentacion', e.target.value)} placeholder="Flor 700 ml" />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="form-label">Mililitros *</label>
-              <select className="form-select" value={form.fdt_mililitros} onChange={e => f('fdt_mililitros', Number(e.target.value))}>
+              <select className="form-select" value={form.cre53_mililitros} onChange={e => f('cre53_mililitros', Number(e.target.value))}>
                 {ML_OPTIONS.map(ml => <option key={ml} value={ml}>{ml} ml</option>)}
               </select>
             </div>
             <div>
               <label className="form-label">Tipo Empaque *</label>
-              <select className="form-select" value={form.fdt_tipo_empaque} onChange={e => f('fdt_tipo_empaque', Number(e.target.value))}>
+              <select className="form-select" value={form.cre53_tipo_empaque} onChange={e => f('cre53_tipo_empaque', Number(e.target.value))}>
                 {EMPAQUES.map(e => <option key={e} value={e}>{TIPO_EMPAQUE_LABEL[e]}</option>)}
               </select>
             </div>
@@ -135,16 +135,16 @@ export default function SKUsPage() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="form-label">Código de Barras</label>
-              <input className="form-input font-mono" value={form.fdt_codigo_barras} onChange={e => f('fdt_codigo_barras', e.target.value)} />
+              <input className="form-input font-mono" value={form.cre53_codigo_barras} onChange={e => f('cre53_codigo_barras', e.target.value)} />
             </div>
             <div>
               <label className="form-label">Costo Estándar (ref.)</label>
-              <input type="number" step="0.0001" className="form-input" value={form.fdt_costo_estandar} onChange={e => f('fdt_costo_estandar', parseFloat(e.target.value) || 0)} />
+              <input type="number" step="0.0001" className="form-input" value={form.cre53_costo_estandar} onChange={e => f('cre53_costo_estandar', parseFloat(e.target.value) || 0)} />
             </div>
           </div>
           <div className="flex justify-end gap-3 pt-2">
             <button className="btn-secondary" onClick={() => setModalOpen(false)}>Cancelar</button>
-            <button className="btn-primary" onClick={handleSave} disabled={saving || !form.fdt_codigo}>
+            <button className="btn-primary" onClick={handleSave} disabled={saving || !form.cre53_codigo}>
               {saving ? 'Guardando...' : editing ? 'Guardar' : 'Crear SKU'}
             </button>
           </div>
@@ -153,8 +153,8 @@ export default function SKUsPage() {
 
       <ConfirmDialog
         open={!!deleteTarget}
-        message={`¿Eliminar SKU "${deleteTarget?.fdt_codigo}"?`}
-        onConfirm={() => { remove.mutateAsync(deleteTarget!.fdt_skuid); setDeleteTarget(null); }}
+        message={`¿Eliminar SKU "${deleteTarget?.cre53_codigo}"?`}
+        onConfirm={() => { remove.mutateAsync(deleteTarget!.cre53_skuid); setDeleteTarget(null); }}
         onCancel={() => setDeleteTarget(null)}
         loading={remove.isPending}
       />

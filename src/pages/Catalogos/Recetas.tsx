@@ -13,35 +13,35 @@ export default function RecetasPage() {
   const { data: skus = [], isLoading: loadingSKUs } = useSKUs();
   const { data: mps = [] } = useMP();
   const [selectedSKU, setSelectedSKU] = useState<SKU | null>(null);
-  const { data: recetas = [], isLoading: loadingRecetas } = useRecetasBySKU(selectedSKU?.fdt_skuid ?? null);
+  const { data: recetas = [], isLoading: loadingRecetas } = useRecetasBySKU(selectedSKU?.cre53_skuid ?? null);
   const { create, remove } = useRecetaMutations();
 
   const [modalOpen, setModalOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<LineaReceta | null>(null);
-  const [form, setForm] = useState<Omit<RecetaForm, 'fdt_sku'>>({
-    fdt_mp: '', fdt_tipo_insumo: 1, fdt_qty_por_litro: 0, fdt_qty_por_botella: 0, fdt_unidad: 'KGS', fdt_activo: true,
+  const [form, setForm] = useState<Partial<LineaReceta>>({
+    _cre53_mp_value: '', cre53_tipo_insumo: 1, cre53_qty_por_litro: 0, cre53_qty_por_botella: 0, cre53_unidad: 'KGS', cre53_activo: true,
   });
 
-  const mpMap = Object.fromEntries(mps.map(m => [m.fdt_mpid, m]));
+  const mpMap = Object.fromEntries(mps.map(m => [m.cre53_materiaprimaid, m]));
 
   // Auto-calc qty_por_botella when qty_por_litro or SKU changes
   function setQtyLitro(v: number) {
-    const botella = selectedSKU ? v * (selectedSKU.fdt_mililitros / 1000) : 0;
-    setForm(p => ({ ...p, fdt_qty_por_litro: v, fdt_qty_por_botella: botella }));
+    const botella = selectedSKU ? v * (selectedSKU.cre53_mililitros / 1000) : 0;
+    setForm(p => ({ ...p, cre53_qty_por_litro: v, cre53_qty_por_botella: botella }));
   }
 
   async function handleAdd() {
     if (!selectedSKU) return;
-    await create.mutateAsync({ ...form, fdt_sku: selectedSKU.fdt_skuid });
+    await create.mutateAsync({ ...form, _cre53_sku_value: selectedSKU.cre53_skuid } as RecetaForm);
     setModalOpen(false);
-    setForm({ fdt_mp: '', fdt_tipo_insumo: 1, fdt_qty_por_litro: 0, fdt_qty_por_botella: 0, fdt_unidad: 'KGS', fdt_activo: true });
+    setForm({ _cre53_mp_value: '', cre53_tipo_insumo: 1, cre53_qty_por_litro: 0, cre53_qty_por_botella: 0, cre53_unidad: 'KGS', cre53_activo: true });
   }
 
   // Group recetas by tipo_insumo
   const byTipo = [1, 2, 3].map(t => ({
     tipo: t,
     label: TIPO_INSUMO_LABEL[t],
-    items: recetas.filter(r => r.fdt_tipo_insumo === t),
+    items: recetas.filter(r => r.cre53_tipo_insumo === t),
   }));
 
   return (
@@ -55,14 +55,14 @@ export default function RecetasPage() {
           {loadingSKUs ? <Spinner /> : (
             <div className="divide-y max-h-[70vh] overflow-y-auto">
               {skus.map(sku => (
-                <button key={sku.fdt_skuid} onClick={() => setSelectedSKU(sku)}
+                <button key={sku.cre53_skuid} onClick={() => setSelectedSKU(sku)}
                   className={`w-full flex items-center justify-between px-4 py-3 text-left transition-colors hover:bg-blue-50
-                    ${selectedSKU?.fdt_skuid === sku.fdt_skuid ? 'bg-blue-50 border-l-2 border-primary' : ''}`}>
+                    ${selectedSKU?.cre53_skuid === sku.cre53_skuid ? 'bg-blue-50 border-l-2 border-primary' : ''}`}>
                   <div>
-                    <p className="text-sm font-medium text-gray-800">{sku.fdt_presentacion}</p>
+                    <p className="text-sm font-medium text-gray-800">{sku.cre53_presentacion}</p>
                     <div className="flex items-center gap-1.5 mt-0.5">
-                      <span className="text-xs text-gray-400 font-mono">{sku.fdt_codigo}</span>
-                      <Badge label={TIPO_EMPAQUE_LABEL[sku.fdt_tipo_empaque]} variant="gray" />
+                      <span className="text-xs text-gray-400 font-mono">{sku.cre53_codigo}</span>
+                      <Badge label={TIPO_EMPAQUE_LABEL[sku.cre53_tipo_empaque]} variant="gray" />
                     </div>
                   </div>
                   <ChevronRight size={14} className="text-gray-300" />
@@ -83,8 +83,8 @@ export default function RecetasPage() {
         ) : (
           <div>
             <PageHeader
-              title={selectedSKU.fdt_presentacion}
-              subtitle={`${selectedSKU.fdt_mililitros} ml · ${LINEA_LABEL[selectedSKU.fdt_linea]} · ${TIPO_EMPAQUE_LABEL[selectedSKU.fdt_tipo_empaque]}`}
+              title={selectedSKU.cre53_presentacion}
+              subtitle={`${selectedSKU.cre53_mililitros} ml · ${LINEA_LABEL[selectedSKU.cre53_linea]} · ${TIPO_EMPAQUE_LABEL[selectedSKU.cre53_tipo_empaque]}`}
               action={
                 <button className="btn-primary" onClick={() => setModalOpen(true)}>
                   <Plus size={16} />Agregar insumo
@@ -112,13 +112,13 @@ export default function RecetasPage() {
                       </thead>
                       <tbody className="divide-y divide-gray-50">
                         {items.map(r => {
-                          const mp = mpMap[r.fdt_mp];
+                          const mp = mpMap[r._cre53_mp_value];
                           return (
-                            <tr key={r.fdt_recetaid} className="hover:bg-gray-50">
-                              <td className="px-4 py-2.5 text-sm text-gray-800">{mp?.fdt_descripcion ?? r.fdt_mp}</td>
-                              <td className="px-4 py-2.5 text-sm text-right font-mono">{fmtNum(r.fdt_qty_por_litro, 6)}</td>
-                              <td className="px-4 py-2.5 text-sm text-right font-mono text-primary">{fmtNum(r.fdt_qty_por_botella, 6)}</td>
-                              <td className="px-4 py-2.5 text-xs text-gray-500">{r.fdt_unidad}</td>
+                            <tr key={r.cre53_recetaid} className="hover:bg-gray-50">
+                              <td className="px-4 py-2.5 text-sm text-gray-800">{mp?.cre53_descripcion ?? r._cre53_mp_value}</td>
+                              <td className="px-4 py-2.5 text-sm text-right font-mono">{fmtNum(r.cre53_qty_por_litro, 6)}</td>
+                              <td className="px-4 py-2.5 text-sm text-right font-mono text-primary">{fmtNum(r.cre53_qty_por_botella, 6)}</td>
+                              <td className="px-4 py-2.5 text-xs text-gray-500">{r.cre53_unidad}</td>
                               <td className="px-2 py-2.5">
                                 <button onClick={() => setDeleteTarget(r)} className="p-1 text-gray-300 hover:text-danger rounded">
                                   <Trash2 size={13} />
@@ -145,16 +145,16 @@ export default function RecetasPage() {
         <div className="space-y-4">
           <div>
             <label className="form-label">Tipo de Insumo *</label>
-            <select className="form-select" value={form.fdt_tipo_insumo} onChange={e => setForm(p => ({ ...p, fdt_tipo_insumo: Number(e.target.value) as 1|2|3 }))}>
+            <select className="form-select" value={form.cre53_tipo_insumo} onChange={e => setForm(p => ({ ...p, cre53_tipo_insumo: Number(e.target.value) as 1|2|3 }))}>
               {TIPO_INSUMO.map(t => <option key={t} value={t}>{TIPO_INSUMO_LABEL[t]}</option>)}
             </select>
           </div>
           <div>
             <label className="form-label">Materia Prima *</label>
-            <select className="form-select" value={form.fdt_mp} onChange={e => setForm(p => ({ ...p, fdt_mp: e.target.value }))}>
+            <select className="form-select" value={form.cre53_mp} onChange={e => setForm(p => ({ ...p, cre53_mp: e.target.value }))}>
               <option value="">Seleccionar...</option>
-              {mps.filter(m => m.fdt_grupo === form.fdt_tipo_insumo).map(m => (
-                <option key={m.fdt_mpid} value={m.fdt_mpid}>{m.fdt_descripcion}</option>
+              {mps.filter(m => m.cre53_grupo === form.cre53_tipo_insumo).map(m => (
+                <option key={m.cre53_materiaprimaid} value={m.cre53_materiaprimaid}>{m.cre53_descripcion}</option>
               ))}
             </select>
           </div>
@@ -162,21 +162,21 @@ export default function RecetasPage() {
             <div>
               <label className="form-label">Cantidad por Litro *</label>
               <input type="number" step="0.000001" min="0" className="form-input font-mono"
-                value={form.fdt_qty_por_litro} onChange={e => setQtyLitro(parseFloat(e.target.value) || 0)} />
+                value={form.cre53_qty_por_litro} onChange={e => setQtyLitro(parseFloat(e.target.value) || 0)} />
             </div>
             <div>
-              <label className="form-label">Cantidad por Botella ({selectedSKU?.fdt_mililitros}ml)</label>
-              <input type="number" step="0.000001" className="form-input font-mono bg-gray-50" readOnly value={form.fdt_qty_por_botella.toFixed(8)} />
-              <p className="text-xs text-gray-400 mt-0.5">= qty/litro × {(selectedSKU?.fdt_mililitros ?? 0) / 1000}</p>
+              <label className="form-label">Cantidad por Botella ({selectedSKU?.cre53_mililitros}ml)</label>
+              <input type="number" step="0.000001" className="form-input font-mono bg-gray-50" readOnly value={(form.cre53_qty_por_botella ?? 0).toFixed(8)} />
+              <p className="text-xs text-gray-400 mt-0.5">= qty/litro × {(selectedSKU?.cre53_mililitros ?? 0) / 1000}</p>
             </div>
           </div>
           <div>
             <label className="form-label">Unidad</label>
-            <input className="form-input" value={form.fdt_unidad} onChange={e => setForm(p => ({ ...p, fdt_unidad: e.target.value }))} placeholder="KGS, LTS, PZA, MT..." />
+            <input className="form-input" value={form.cre53_unidad} onChange={e => setForm(p => ({ ...p, cre53_unidad: e.target.value }))} placeholder="KGS, LTS, PZA, MT..." />
           </div>
           <div className="flex justify-end gap-3 pt-2">
             <button className="btn-secondary" onClick={() => setModalOpen(false)}>Cancelar</button>
-            <button className="btn-primary" onClick={handleAdd} disabled={create.isPending || !form.fdt_mp}>
+            <button className="btn-primary" onClick={handleAdd} disabled={create.isPending || !form.cre53_mp}>
               {create.isPending ? 'Guardando...' : 'Agregar'}
             </button>
           </div>
@@ -185,8 +185,8 @@ export default function RecetasPage() {
 
       <ConfirmDialog
         open={!!deleteTarget}
-        message={`¿Eliminar "${mpMap[deleteTarget?.fdt_mp ?? '']?.fdt_descripcion ?? ''}" de la receta?`}
-        onConfirm={() => { remove.mutateAsync(deleteTarget!.fdt_recetaid); setDeleteTarget(null); }}
+        message={`¿Eliminar "${mpMap[deleteTarget?.cre53_mp ?? '']?.cre53_descripcion ?? ''}" de la receta?`}
+        onConfirm={() => { remove.mutateAsync(deleteTarget!.cre53_recetaid); setDeleteTarget(null); }}
         onCancel={() => setDeleteTarget(null)}
         loading={remove.isPending}
       />

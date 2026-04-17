@@ -11,25 +11,25 @@ import { TIPO_EMPAQUE_LABEL, TURNO_LABEL } from '../../types';
 
 export function ProduccionPage() {
   const { data: periodo } = usePeriodoActivo();
-  const periodoId = periodo?.fdt_periodoid ?? null;
+  const periodoId = periodo?.cre53_periodoid ?? null;
   const { data: produccion = [], isLoading } = useProduccion(periodoId);
   const { data: skus = [] } = useSKUs();
   const { create, remove } = useProduccionMutations(periodoId);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<any>(null);
-  const [form, setForm] = useState<Partial<ProduccionForm>>({ fdt_periodo: periodoId ?? '', fdt_cantidad_botellas: 0, fdt_semana: 1, fdt_turno: 1, fdt_fecha: new Date().toISOString().split('T')[0] });
+  const [form, setForm] = useState<Partial<ProduccionForm>>({ _cre53_periodo_value: periodoId ?? '', cre53_cantidad_botellas: 0, cre53_semana: 1, cre53_turno: 1, cre53_fecha: new Date().toISOString().split('T')[0] });
 
-  const skuMap = useMemo(() => Object.fromEntries(skus.map(s => [s.fdt_skuid, s])), [skus]);
-  const totalBotellas = produccion.reduce((s, p) => s + p.fdt_cantidad_botellas, 0);
-  const totalLitros = produccion.reduce((s, p) => s + (p.fdt_litros ?? 0), 0);
+  const skuMap = useMemo(() => Object.fromEntries(skus.map(s => [s.cre53_skuid, s])), [skus]);
+  const totalBotellas = produccion.reduce((s, p) => s + p.cre53_cantidad_botellas, 0);
+  const totalLitros = produccion.reduce((s, p) => s + (p.cre53_litros ?? 0), 0);
 
-  const f = (k: keyof ProduccionForm, v: any) => setForm(p => ({ ...p, [k]: v }));
+  const f = (k: string, v: any) => setForm(p => ({ ...p, [k]: v }));
 
   async function handleSave() {
-    const sku = skuMap[form.fdt_sku ?? ''];
-    const litros = sku ? (form.fdt_cantidad_botellas ?? 0) * (sku.fdt_mililitros / 1000) : 0;
-    await create.mutateAsync({ ...form, fdt_periodo: periodoId!, fdt_litros: litros } as ProduccionForm);
+    const sku = skuMap[form.cre53_sku ?? ''];
+    const litros = sku ? (form.cre53_cantidad_botellas ?? 0) * (sku.cre53_mililitros / 1000) : 0;
+    await create.mutateAsync({ ...form, _cre53_periodo_value: periodoId!, cre53_litros: litros } as ProduccionForm);
     setModalOpen(false);
   }
 
@@ -37,8 +37,8 @@ export function ProduccionPage() {
     <div>
       <PageHeader
         title="Producción"
-        subtitle={periodo?.fdt_nombre ?? 'Sin período activo'}
-        action={<button className="btn-primary" onClick={() => { setForm({ fdt_periodo: periodoId ?? '', fdt_cantidad_botellas: 0, fdt_semana: 1, fdt_turno: 1, fdt_fecha: new Date().toISOString().split('T')[0] }); setModalOpen(true); }} disabled={!periodoId}><Plus size={16} />Registrar</button>}
+        subtitle={periodo?.cre53_nombre ?? 'Sin período activo'}
+        action={<button className="btn-primary" onClick={() => { setForm({ _cre53_periodo_value: periodoId ?? '', cre53_cantidad_botellas: 0, cre53_semana: 1, cre53_turno: 1, cre53_fecha: new Date().toISOString().split('T')[0] }); setModalOpen(true); }} disabled={!periodoId}><Plus size={16} />Registrar</button>}
       />
       <div className="grid grid-cols-3 gap-4 mb-6">
         <KPICard title="Total Botellas Producidas" value={totalBotellas} format="number" color="blue" />
@@ -48,14 +48,14 @@ export function ProduccionPage() {
       {isLoading ? <Spinner /> : (
         <div className="card p-0 overflow-hidden">
           <DataTable
-            data={produccion} rowKey={r => r.fdt_produccionid}
+            data={produccion} rowKey={r => r.cre53_produccionid}
             columns={[
-              { key: 'fdt_sku', header: 'SKU', render: r => { const s = skuMap[r.fdt_sku]; return s ? `${s.fdt_presentacion} (${TIPO_EMPAQUE_LABEL[s.fdt_tipo_empaque]})` : r.fdt_sku; } },
-              { key: 'fdt_cantidad_botellas', header: 'Botellas', align: 'right', render: r => <span className="font-semibold">{fmtNum(r.fdt_cantidad_botellas, 0)}</span> },
-              { key: 'fdt_litros', header: 'Litros', align: 'right', render: r => fmtNum(r.fdt_litros ?? 0, 1) },
-              { key: 'fdt_semana', header: 'Semana', align: 'center', render: r => r.fdt_semana ? `Sem ${r.fdt_semana}` : '—' },
-              { key: 'fdt_turno', header: 'Turno', render: r => r.fdt_turno ? TURNO_LABEL[r.fdt_turno] : '—' },
-              { key: 'fdt_fecha', header: 'Fecha', render: r => r.fdt_fecha?.split('T')[0] ?? '—' },
+              { key: 'cre53_sku', header: 'SKU', render: r => { const s = skuMap[r._cre53_sku_value]; return s ? `${s.cre53_presentacion} (${TIPO_EMPAQUE_LABEL[s.cre53_tipo_empaque]})` : r._cre53_sku_value; } },
+              { key: 'cre53_cantidad_botellas', header: 'Botellas', align: 'right', render: r => <span className="font-semibold">{fmtNum(r.cre53_cantidad_botellas, 0)}</span> },
+              { key: 'cre53_litros', header: 'Litros', align: 'right', render: r => fmtNum(r.cre53_litros ?? 0, 1) },
+              { key: 'cre53_semana', header: 'Semana', align: 'center', render: r => r.cre53_semana ? `Sem ${r.cre53_semana}` : '—' },
+              { key: 'cre53_turno', header: 'Turno', render: r => r.cre53_turno ? TURNO_LABEL[r.cre53_turno] : '—' },
+              { key: 'cre53_fecha', header: 'Fecha', render: r => r.cre53_fecha?.split('T')[0] ?? '—' },
               { key: 'actions', header: '', align: 'right', width: '50px', render: r => <button onClick={() => setDeleteTarget(r)} className="p-1.5 text-gray-300 hover:text-danger rounded"><Trash2 size={14} /></button> },
             ]}
           />
@@ -65,23 +65,23 @@ export function ProduccionPage() {
         <div className="space-y-4">
           <div>
             <label className="form-label">SKU *</label>
-            <select className="form-select" value={form.fdt_sku ?? ''} onChange={e => f('fdt_sku', e.target.value)}>
+            <select className="form-select" value={form.cre53_sku ?? ''} onChange={e => f('_cre53_sku_value', e.target.value)}>
               <option value="">Seleccionar...</option>
-              {skus.map(s => <option key={s.fdt_skuid} value={s.fdt_skuid}>{s.fdt_codigo} — {s.fdt_presentacion}</option>)}
+              {skus.map(s => <option key={s.cre53_skuid} value={s.cre53_skuid}>{s.cre53_codigo} — {s.cre53_presentacion}</option>)}
             </select>
           </div>
           <div className="grid grid-cols-3 gap-3">
             <div>
               <label className="form-label">Botellas *</label>
-              <input type="number" min="0" className="form-input" value={form.fdt_cantidad_botellas ?? 0} onChange={e => f('fdt_cantidad_botellas', parseInt(e.target.value) || 0)} />
+              <input type="number" min="0" className="form-input" value={form.cre53_cantidad_botellas ?? 0} onChange={e => f('cre53_cantidad_botellas', parseInt(e.target.value) || 0)} />
             </div>
             <div>
               <label className="form-label">Semana</label>
-              <input type="number" min="1" max="6" className="form-input" value={form.fdt_semana ?? ''} onChange={e => f('fdt_semana', parseInt(e.target.value) || 1)} />
+              <input type="number" min="1" max="6" className="form-input" value={form.cre53_semana ?? ''} onChange={e => f('cre53_semana', parseInt(e.target.value) || 1)} />
             </div>
             <div>
               <label className="form-label">Turno</label>
-              <select className="form-select" value={form.fdt_turno ?? 1} onChange={e => f('fdt_turno', Number(e.target.value))}>
+              <select className="form-select" value={form.cre53_turno ?? 1} onChange={e => f('cre53_turno', Number(e.target.value))}>
                 <option value={1}>Turno 1</option>
                 <option value={2}>Turno 2</option>
               </select>
@@ -89,18 +89,18 @@ export function ProduccionPage() {
           </div>
           <div>
             <label className="form-label">Fecha *</label>
-            <input type="date" className="form-input" value={form.fdt_fecha?.split('T')[0] ?? ''} onChange={e => f('fdt_fecha', e.target.value)} />
+            <input type="date" className="form-input" value={form.cre53_fecha?.split('T')[0] ?? ''} onChange={e => f('cre53_fecha', e.target.value)} />
           </div>
           <div className="flex justify-end gap-3 pt-2">
             <button className="btn-secondary" onClick={() => setModalOpen(false)}>Cancelar</button>
-            <button className="btn-primary" onClick={handleSave} disabled={create.isPending || !form.fdt_sku}>
+            <button className="btn-primary" onClick={handleSave} disabled={create.isPending || !form.cre53_sku}>
               {create.isPending ? 'Guardando...' : 'Registrar'}
             </button>
           </div>
         </div>
       </Modal>
       <ConfirmDialog open={!!deleteTarget} message="¿Eliminar este registro de producción?"
-        onConfirm={() => { remove.mutateAsync(deleteTarget.fdt_produccionid); setDeleteTarget(null); }}
+        onConfirm={() => { remove.mutateAsync(deleteTarget.cre53_produccionid); setDeleteTarget(null); }}
         onCancel={() => setDeleteTarget(null)} loading={remove.isPending} />
     </div>
   );
