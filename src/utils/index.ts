@@ -30,7 +30,7 @@ export function costoMPPorBotella(
 ): number {
   return recetas.reduce((sum, r) => {
     const precio = preciosMap[r._cre53_mp_value ?? ""] ?? 0;
-    return sum + r.cre53_qty_por_botella * precio;
+    return sum + r.cre53_fdt_qty_por_botella * precio;
   }, 0);
 }
 
@@ -47,8 +47,8 @@ export function consumoTeoricoMP(
   return recetasDeMP.reduce((total, receta) => {
     const prodSKU = produccion
       .filter(p => p.cre53_sku === receta.cre53_sku)
-      .reduce((s, p) => s + p.cre53_cantidad_botellas, 0);
-    return total + prodSKU * receta.cre53_qty_por_botella;
+      .reduce((s, p) => s + p.cre53_fdt_cantidad_botellas, 0);
+    return total + prodSKU * receta.cre53_fdt_qty_por_botella;
   }, 0);
 }
 
@@ -104,7 +104,7 @@ export function semaforo(pct: number): 'success' | 'warning' | 'danger' {
 /** Agrega totales de compras por MP */
 export function totalComprasPorMP(compras: CompraMP[]): Record<string, number> {
   return compras.reduce((acc, c) => {
-    acc[c._cre53_mp_value] = (acc[c._cre53_mp_value] ?? 0) + c.cre53_cantidad_base;
+    acc[c._cre53_mp_value] = (acc[c._cre53_mp_value] ?? 0) + c.cre53_fdt_cantidad_base;
     return acc;
   }, {} as Record<string, number>);
 }
@@ -112,7 +112,7 @@ export function totalComprasPorMP(compras: CompraMP[]): Record<string, number> {
 /** Agrega inventario físico por MP */
 export function invFisicoPorMP(inventarios: InventarioMP[]): Record<string, number> {
   return inventarios.reduce((acc, i) => {
-    acc[i._cre53_mp_value] = (acc[i._cre53_mp_value] ?? 0) + i.cre53_cantidad_base;
+    acc[i._cre53_mp_value] = (acc[i._cre53_mp_value] ?? 0) + i.cre53_fdt_cantidad_base;
     return acc;
   }, {} as Record<string, number>);
 }

@@ -3,46 +3,46 @@
 
 export interface Bodega {
   cre53_bodegaid: string;
-  cre53_nombre: string;
-  cre53_tipo: 1 | 2;
-  cre53_ubicacion?: string;
-  cre53_activo: boolean;
+  cre53_fdt_nombre: string;
+  cre53_fdt_tipo: 1 | 2;
+  cre53_fdt_ubicacion?: string;
+  cre53_fdt_activo: boolean;
 }
 
 export interface MateriaPrima {
   cre53_materiaprimaid: string;
-  cre53_codigo: string;
-  cre53_descripcion: string;
-  cre53_alias?: string;
-  cre53_grupo: 1 | 2 | 3;
-  cre53_unidad_compra: string;
-  cre53_factor_conversion: number;
-  cre53_unidad_almacen: string;
-  cre53_unidad_venta?: string;
-  cre53_precio_base: number;
-  cre53_activo: boolean;
+  cre53_fdt_codigo: string;
+  cre53_fdt_descripcion: string;
+  cre53_fdt_alias?: string;
+  cre53_fdt_grupo: 1 | 2 | 3;
+  cre53_fdt_unidad_compra: string;
+  cre53_fdt_factor_conversion: number;
+  cre53_fdt_unidad_almacen: string;
+  cre53_fdt_unidad_venta?: string;
+  cre53_fdt_precio_base: number;
+  cre53_fdt_activo: boolean;
 }
 
 export interface SKU {
   cre53_skuid: string;
-  cre53_codigo: string;
-  cre53_presentacion: string;
-  cre53_linea: 1 | 2;
-  cre53_mililitros: number;
-  cre53_tipo_empaque: 1 | 2 | 3 | 4;
-  cre53_codigo_barras?: string;
-  cre53_costo_estandar?: number;
-  cre53_activo: boolean;
+  cre53_fdt_codigo: string;
+  cre53_fdt_presentacion: string;
+  cre53_fdt_linea: 1 | 2;
+  cre53_fdt_mililitros: number;
+  cre53_fdt_tipo_empaque: 1 | 2 | 3 | 4;
+  cre53_fdt_codigo_barras?: string;
+  cre53_fdt_costo_estandar?: number;
+  cre53_fdt_activo: boolean;
 }
 
 export interface Periodo {
   cre53_periodoid: string;
-  cre53_nombre: string;
-  cre53_anio: number;
-  cre53_mes: number;
-  cre53_fecha_inicio: string;
-  cre53_fecha_corte: string;
-  cre53_cerrado: boolean;
+  cre53_fdt_nombre: string;
+  cre53_fdt_anio: number;
+  cre53_fdt_mes: number;
+  cre53_fdt_fecha_inicio: string;
+  cre53_fdt_fecha_corte: string;
+  cre53_fdt_cerrado: boolean;
 }
 
 export interface LineaReceta {
@@ -53,11 +53,11 @@ export interface LineaReceta {
   // Aliases for forms
   cre53_sku?: string;
   cre53_mp?: string;
-  cre53_tipo_insumo: 1 | 2 | 3;
-  cre53_qty_por_litro: number;
-  cre53_qty_por_botella: number;
-  cre53_unidad: string;
-  cre53_activo: boolean;
+  cre53_fdt_tipo_insumo: 1 | 2 | 3;
+  cre53_fdt_qty_por_litro: number;
+  cre53_fdt_qty_por_botella: number;
+  cre53_fdt_unidad: string;
+  cre53_fdt_activo: boolean;
   _sku?: SKU;
   _mp?: MateriaPrima;
 }
@@ -71,13 +71,13 @@ export interface InventarioMP {
   cre53_periodo?: string;
   cre53_bodega?: string;
   cre53_mp?: string;
-  cre53_cantidad_base: number;
-  cre53_cantidad_almacen: number;
-  cre53_precio_unitario: number;
-  cre53_valor: number;
-  cre53_fecha_conteo: string;
-  cre53_capturado_por?: string;
-  cre53_observaciones?: string;
+  cre53_fdt_cantidad_base: number;
+  cre53_fdt_cantidad_almacen: number;
+  cre53_fdt_precio_unitario: number;
+  cre53_fdt_valor: number;
+  cre53_fdt_fecha_conteo: string;
+  cre53_fdt_capturado_por?: string;
+  cre53_fdt_observaciones?: string;
   _mp?: MateriaPrima;
   _bodega?: Bodega;
 }
@@ -90,11 +90,11 @@ export interface InventarioPT {
   cre53_periodo?: string;
   cre53_bodega?: string;
   cre53_sku?: string;
-  cre53_cantidad: number;
-  cre53_costo_unitario?: number;
-  cre53_valor?: number;
-  cre53_fecha_conteo: string;
-  cre53_capturado_por?: string;
+  cre53_fdt_cantidad: number;
+  cre53_fdt_costo_unitario?: number;
+  cre53_fdt_valor?: number;
+  cre53_fdt_fecha_conteo: string;
+  cre53_fdt_capturado_por?: string;
   _sku?: SKU;
   _bodega?: Bodega;
 }
@@ -105,11 +105,11 @@ export interface Produccion {
   _cre53_sku_value: string;
   cre53_periodo?: string;
   cre53_sku?: string;
-  cre53_cantidad_botellas: number;
-  cre53_litros?: number;
-  cre53_semana?: number;
-  cre53_turno?: 1 | 2;
-  cre53_fecha: string;
+  cre53_fdt_cantidad_botellas: number;
+  cre53_fdt_litros?: number;
+  cre53_fdt_semana?: number;
+  cre53_fdt_turno?: 1 | 2;
+  cre53_fdt_fecha: string;
   _sku?: SKU;
 }
 
@@ -119,12 +119,12 @@ export interface CompraMP {
   _cre53_mp_value: string;
   cre53_periodo?: string;
   cre53_mp?: string;
-  cre53_cantidad_base: number;
-  cre53_precio_unitario: number;
-  cre53_valor: number;
-  cre53_proveedor?: string;
-  cre53_fecha: string;
-  cre53_folio?: string;
+  cre53_fdt_cantidad_base: number;
+  cre53_fdt_precio_unitario: number;
+  cre53_fdt_valor: number;
+  cre53_fdt_proveedor?: string;
+  cre53_fdt_fecha: string;
+  cre53_fdt_folio?: string;
   _mp?: MateriaPrima;
 }
 
@@ -136,11 +136,11 @@ export interface Venta {
   cre53_periodo?: string;
   cre53_bodega?: string;
   cre53_sku?: string;
-  cre53_cantidad: number;
-  cre53_precio_venta?: number;
-  cre53_valor?: number;
-  cre53_fecha: string;
-  cre53_folio?: string;
+  cre53_fdt_cantidad: number;
+  cre53_fdt_precio_venta?: number;
+  cre53_fdt_valor?: number;
+  cre53_fdt_fecha: string;
+  cre53_fdt_folio?: string;
   _sku?: SKU;
   _bodega?: Bodega;
 }
@@ -149,11 +149,11 @@ export interface Costeo {
   cre53_costeoid: string;
   _cre53_periodo_value: string;
   _cre53_sku_value: string;
-  cre53_costo_mp: number;
-  cre53_costo_mod: number;
-  cre53_costo_empaque: number;
-  cre53_costo_embalaje: number;
-  cre53_costo_total: number;
+  cre53_fdt_costo_mp: number;
+  cre53_fdt_costo_mod: number;
+  cre53_fdt_costo_empaque: number;
+  cre53_fdt_costo_embalaje: number;
+  cre53_fdt_costo_total: number;
   _sku?: SKU;
 }
 

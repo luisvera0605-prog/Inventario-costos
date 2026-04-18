@@ -32,14 +32,14 @@ export default function InventarioPTPage() {
 
   // Cobertura por bodega
   const bodegasConCaptura = useMemo(() => new Set(invPT.map(i => i._cre53_bodega_value)).size, [invPT]);
-  const totalValor = useMemo(() => invPT.reduce((s, i) => s + (i.cre53_valor ?? 0), 0), [invPT]);
+  const totalValor = useMemo(() => invPT.reduce((s, i) => s + (i.cre53_fdt_valor ?? 0), 0), [invPT]);
 
   // Inventario teórico PT por SKU
   const teoricoMap = useMemo(() => {
     const prodMap: Record<string, number> = {};
-    produccion.forEach(p => { prodMap[p._cre53_sku_value] = (prodMap[p._cre53_sku_value] ?? 0) + p.cre53_cantidad_botellas; });
+    produccion.forEach(p => { prodMap[p._cre53_sku_value] = (prodMap[p._cre53_sku_value] ?? 0) + p.cre53_fdt_cantidad_botellas; });
     const ventasMap: Record<string, number> = {};
-    ventas.forEach(v => { ventasMap[v._cre53_sku_value] = (ventasMap[v._cre53_sku_value] ?? 0) + v.cre53_cantidad; });
+    ventas.forEach(v => { ventasMap[v._cre53_sku_value] = (ventasMap[v._cre53_sku_value] ?? 0) + v.cre53_fdt_cantidad; });
     const result: Record<string, number> = {};
     skus.forEach(s => { result[s.cre53_skuid] = (prodMap[s.cre53_skuid] ?? 0) - (ventasMap[s.cre53_skuid] ?? 0); });
     return result;
@@ -47,18 +47,18 @@ export default function InventarioPTPage() {
 
   function openCreate() {
     setEditing(null);
-    setForm({ _cre53_periodo_value: periodoId ?? '', _cre53_bodega_value: bodegaFilter || '', _cre53_sku_value: '', cre53_cantidad: 0, cre53_fecha_conteo: new Date().toISOString().split('T')[0] });
+    setForm({ _cre53_periodo_value: periodoId ?? '', _cre53_bodega_value: bodegaFilter || '', _cre53_sku_value: '', cre53_fdt_cantidad: 0, cre53_fdt_fecha_conteo: new Date().toISOString().split('T')[0] });
     setModalOpen(true);
   }
   function openEdit(inv: InventarioPT) {
     setEditing(inv);
-    setForm({ _cre53_bodega_value: inv._cre53_bodega_value, cre53_sku: inv._cre53_sku_value, cre53_cantidad: inv.cre53_cantidad, cre53_costo_unitario: inv.cre53_costo_unitario, cre53_fecha_conteo: inv.cre53_fecha_conteo, cre53_capturado_por: inv.cre53_capturado_por });
+    setForm({ _cre53_bodega_value: inv._cre53_bodega_value, cre53_sku: inv._cre53_sku_value, cre53_fdt_cantidad: inv.cre53_fdt_cantidad, cre53_fdt_costo_unitario: inv.cre53_fdt_costo_unitario, cre53_fdt_fecha_conteo: inv.cre53_fdt_fecha_conteo, cre53_fdt_capturado_por: inv.cre53_fdt_capturado_por });
     setModalOpen(true);
   }
 
   const f = (k: string, v: any) => setForm(p => ({ ...p, [k]: v }));
   async function handleSave() {
-    const payload = { ...form, cre53_valor: (form.cre53_cantidad ?? 0) * (form.cre53_costo_unitario ?? 0) };
+    const payload = { ...form, cre53_fdt_valor: (form.cre53_fdt_cantidad ?? 0) * (form.cre53_fdt_costo_unitario ?? 0) };
     if (editing) await update.mutateAsync({ id: editing.cre53_inventarioptid, d: payload as Partial<InvPTForm> });
     else await create.mutateAsync(payload as InvPTForm);
     setModalOpen(false);
@@ -68,7 +68,7 @@ export default function InventarioPTPage() {
     <div>
       <PageHeader
         title="Inventario — Producto Terminado"
-        subtitle={periodo ? `Período: ${periodo.cre53_nombre} · ${bodegasConCaptura} de ${bodegas.length} bodegas capturadas` : 'Sin período activo'}
+        subtitle={periodo ? `Período: ${periodo.cre53_fdt_nombre} · ${bodegasConCaptura} de ${bodegas.length} bodegas capturadas` : 'Sin período activo'}
         action={<button className="btn-primary" onClick={openCreate} disabled={!periodoId}><Plus size={16} />Capturar</button>}
       />
 
@@ -88,7 +88,7 @@ export default function InventarioPTPage() {
           <button key={b.cre53_bodegaid} onClick={() => setBodegaFilter(b.cre53_bodegaid)}
             className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors flex items-center gap-1.5 ${bodegaFilter === b.cre53_bodegaid ? 'bg-primary text-white' : 'bg-white border text-gray-600 hover:bg-gray-50'}`}>
             <Building2 size={13} />
-            {b.cre53_nombre}
+            {b.cre53_fdt_nombre}
           </button>
         ))}
       </div>
@@ -99,20 +99,20 @@ export default function InventarioPTPage() {
             data={filtered}
             rowKey={r => r.cre53_inventarioptid}
             columns={[
-              { key: 'cre53_bodega', header: 'Bodega', render: r => bodegaMap[r._cre53_bodega_value ?? '']?.cre53_nombre ?? '—' },
+              { key: 'cre53_bodega', header: 'Bodega', render: r => bodegaMap[r._cre53_bodega_value ?? '']?.cre53_fdt_nombre ?? '—' },
               {
                 key: 'cre53_sku', header: 'SKU', render: r => {
                   const sku = skuMap[r._cre53_sku_value ?? ''];
                   return sku ? (
                     <div>
-                      <p className="text-sm font-medium">{sku.cre53_presentacion}</p>
-                      <p className="text-xs text-gray-400 font-mono">{sku.cre53_codigo}</p>
+                      <p className="text-sm font-medium">{sku.cre53_fdt_presentacion}</p>
+                      <p className="text-xs text-gray-400 font-mono">{sku.cre53_fdt_codigo}</p>
                     </div>
                   ) : r._cre53_sku_value;
                 }
               },
-              { key: 'cre53_sku', header: 'Línea', render: r => { const s = skuMap[r._cre53_sku_value ?? '']; return s ? <Badge label={LINEA_LABEL[s.cre53_linea]} variant={s.cre53_linea === 1 ? 'info' : 'warning'} /> : null; } },
-              { key: 'cre53_cantidad', header: 'Físico (Bot.)', align: 'right', render: r => <span className="font-semibold">{fmtNum(r.cre53_cantidad, 0)}</span> },
+              { key: 'cre53_sku', header: 'Línea', render: r => { const s = skuMap[r._cre53_sku_value ?? '']; return s ? <Badge label={LINEA_LABEL[s.cre53_fdt_linea]} variant={s.cre53_fdt_linea === 1 ? 'info' : 'warning'} /> : null; } },
+              { key: 'cre53_fdt_cantidad', header: 'Físico (Bot.)', align: 'right', render: r => <span className="font-semibold">{fmtNum(r.cre53_fdt_cantidad, 0)}</span> },
               {
                 key: 'cre53_sku', header: 'Teórico', align: 'right',
                 render: r => {
@@ -121,16 +121,16 @@ export default function InventarioPTPage() {
                 }
               },
               {
-                key: 'cre53_cantidad', header: 'Diferencia', align: 'right',
+                key: 'cre53_fdt_cantidad', header: 'Diferencia', align: 'right',
                 render: r => {
                   const t = teoricoMap[r._cre53_sku_value];
                   if (t == null) return '—';
-                  const d = diferencia(r.cre53_cantidad, t);
+                  const d = diferencia(r.cre53_fdt_cantidad, t);
                   return <span className={d < 0 ? 'text-danger font-semibold' : d > 0 ? 'text-warning' : 'text-success'}>{d > 0 ? '+' : ''}{fmtNum(d, 0)}</span>;
                 }
               },
-              { key: 'cre53_costo_unitario', header: 'Costo Unit.', align: 'right', render: r => r.cre53_costo_unitario ? fmtPeso(r.cre53_costo_unitario) : '—' },
-              { key: 'cre53_valor', header: 'Valor', align: 'right', render: r => r.cre53_valor ? <span className="font-semibold">{fmtPeso(r.cre53_valor)}</span> : '—' },
+              { key: 'cre53_fdt_costo_unitario', header: 'Costo Unit.', align: 'right', render: r => r.cre53_fdt_costo_unitario ? fmtPeso(r.cre53_fdt_costo_unitario) : '—' },
+              { key: 'cre53_fdt_valor', header: 'Valor', align: 'right', render: r => r.cre53_fdt_valor ? <span className="font-semibold">{fmtPeso(r.cre53_fdt_valor)}</span> : '—' },
               {
                 key: 'actions', header: '', align: 'right', width: '80px',
                 render: r => (
@@ -151,34 +151,34 @@ export default function InventarioPTPage() {
             <label className="form-label">Bodega *</label>
             <select className="form-select" value={form.cre53_bodega} onChange={e => f('_cre53_bodega_value', e.target.value)}>
               <option value="">Seleccionar...</option>
-              {bodegas.map(b => <option key={b.cre53_bodegaid} value={b.cre53_bodegaid}>{b.cre53_nombre}</option>)}
+              {bodegas.map(b => <option key={b.cre53_bodegaid} value={b.cre53_bodegaid}>{b.cre53_fdt_nombre}</option>)}
             </select>
           </div>
           <div>
             <label className="form-label">SKU *</label>
             <select className="form-select" value={form.cre53_sku} onChange={e => f('_cre53_sku_value', e.target.value)}>
               <option value="">Seleccionar...</option>
-              {skus.map(s => <option key={s.cre53_skuid} value={s.cre53_skuid}>{s.cre53_codigo} — {s.cre53_presentacion} ({TIPO_EMPAQUE_LABEL[s.cre53_tipo_empaque]})</option>)}
+              {skus.map(s => <option key={s.cre53_skuid} value={s.cre53_skuid}>{s.cre53_fdt_codigo} — {s.cre53_fdt_presentacion} ({TIPO_EMPAQUE_LABEL[s.cre53_fdt_tipo_empaque]})</option>)}
             </select>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="form-label">Cantidad (botellas) *</label>
-              <input type="number" step="1" min="0" className="form-input" value={form.cre53_cantidad ?? 0} onChange={e => f('cre53_cantidad', parseInt(e.target.value) || 0)} />
+              <input type="number" step="1" min="0" className="form-input" value={form.cre53_fdt_cantidad ?? 0} onChange={e => f('cre53_fdt_cantidad', parseInt(e.target.value) || 0)} />
             </div>
             <div>
               <label className="form-label">Costo Unitario (ref.)</label>
-              <input type="number" step="0.0001" className="form-input" value={form.cre53_costo_unitario ?? ''} onChange={e => f('cre53_costo_unitario', parseFloat(e.target.value) || 0)} />
+              <input type="number" step="0.0001" className="form-input" value={form.cre53_fdt_costo_unitario ?? ''} onChange={e => f('cre53_fdt_costo_unitario', parseFloat(e.target.value) || 0)} />
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="form-label">Fecha de Conteo *</label>
-              <input type="date" className="form-input" value={form.cre53_fecha_conteo?.split('T')[0] ?? ''} onChange={e => f('cre53_fecha_conteo', e.target.value)} />
+              <input type="date" className="form-input" value={form.cre53_fdt_fecha_conteo?.split('T')[0] ?? ''} onChange={e => f('cre53_fdt_fecha_conteo', e.target.value)} />
             </div>
             <div>
               <label className="form-label">Capturado por</label>
-              <input className="form-input" value={form.cre53_capturado_por ?? ''} onChange={e => f('cre53_capturado_por', e.target.value)} />
+              <input className="form-input" value={form.cre53_fdt_capturado_por ?? ''} onChange={e => f('cre53_fdt_capturado_por', e.target.value)} />
             </div>
           </div>
           <div className="flex justify-end gap-3 pt-2">

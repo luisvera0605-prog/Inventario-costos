@@ -12,10 +12,10 @@ const GRUPOS = [1, 2, 3] as const;
 const BADGE_GRUPO: Record<number, 'info' | 'warning' | 'gray'> = { 1: 'info', 2: 'warning', 3: 'gray' };
 
 const defaultForm = (): MPForm => ({
-  cre53_codigo: '', cre53_descripcion: '', cre53_alias: '', cre53_grupo: 1,
-  cre53_unidad_compra: 'KGS', cre53_factor_conversion: 1,
-  cre53_unidad_almacen: 'KGS', cre53_unidad_venta: '',
-  cre53_precio_base: 0, cre53_activo: true,
+  cre53_fdt_codigo: '', cre53_fdt_descripcion: '', cre53_fdt_alias: '', cre53_fdt_grupo: 1,
+  cre53_fdt_unidad_compra: 'KGS', cre53_fdt_factor_conversion: 1,
+  cre53_fdt_unidad_almacen: 'KGS', cre53_fdt_unidad_venta: '',
+  cre53_fdt_precio_base: 0, cre53_fdt_activo: true,
 });
 
 export default function MateriasPrimasPage() {
@@ -31,18 +31,18 @@ export default function MateriasPrimasPage() {
 
   const filtered = useMemo(() => mps.filter(m => {
     const q = search.toLowerCase();
-    const matchSearch = !q || m.cre53_codigo.toLowerCase().includes(q) || m.cre53_descripcion.toLowerCase().includes(q) || (m.cre53_alias ?? '').toLowerCase().includes(q);
-    const matchGrupo = grupoFilter === '' || m.cre53_grupo === grupoFilter;
+    const matchSearch = !q || m.cre53_fdt_codigo.toLowerCase().includes(q) || m.cre53_fdt_descripcion.toLowerCase().includes(q) || (m.cre53_fdt_alias ?? '').toLowerCase().includes(q);
+    const matchGrupo = grupoFilter === '' || m.cre53_fdt_grupo === grupoFilter;
     return matchSearch && matchGrupo;
   }), [mps, search, grupoFilter]);
 
   function openCreate() { setEditing(null); setForm(defaultForm()); setModalOpen(true); }
   function openEdit(mp: MateriaPrima) {
     setEditing(mp);
-    setForm({ cre53_codigo: mp.cre53_codigo, cre53_descripcion: mp.cre53_descripcion, cre53_alias: mp.cre53_alias ?? '',
-      cre53_grupo: mp.cre53_grupo, cre53_unidad_compra: mp.cre53_unidad_compra,
-      cre53_factor_conversion: mp.cre53_factor_conversion, cre53_unidad_almacen: mp.cre53_unidad_almacen,
-      cre53_unidad_venta: mp.cre53_unidad_venta ?? '', cre53_precio_base: mp.cre53_precio_base, cre53_activo: mp.cre53_activo });
+    setForm({ cre53_fdt_codigo: mp.cre53_fdt_codigo, cre53_fdt_descripcion: mp.cre53_fdt_descripcion, cre53_fdt_alias: mp.cre53_fdt_alias ?? '',
+      cre53_fdt_grupo: mp.cre53_fdt_grupo, cre53_fdt_unidad_compra: mp.cre53_fdt_unidad_compra,
+      cre53_fdt_factor_conversion: mp.cre53_fdt_factor_conversion, cre53_fdt_unidad_almacen: mp.cre53_fdt_unidad_almacen,
+      cre53_fdt_unidad_venta: mp.cre53_fdt_unidad_venta ?? '', cre53_fdt_precio_base: mp.cre53_fdt_precio_base, cre53_fdt_activo: mp.cre53_fdt_activo });
     setModalOpen(true);
   }
 
@@ -80,35 +80,35 @@ export default function MateriasPrimasPage() {
             data={filtered}
             rowKey={r => r.cre53_materiaprimaid}
             columns={[
-              { key: 'cre53_codigo', header: 'Código', sortable: true, width: '90px' },
-              { key: 'cre53_descripcion', header: 'Descripción', sortable: true },
-              { key: 'cre53_alias', header: 'Alias', render: r => r.cre53_alias || '—' },
-              { key: 'cre53_grupo', header: 'Grupo', render: r => <Badge label={GRUPO_MP_LABEL[r.cre53_grupo]} variant={BADGE_GRUPO[r.cre53_grupo]} /> },
+              { key: 'cre53_fdt_codigo', header: 'Código', sortable: true, width: '90px' },
+              { key: 'cre53_fdt_descripcion', header: 'Descripción', sortable: true },
+              { key: 'cre53_fdt_alias', header: 'Alias', render: r => r.cre53_fdt_alias || '—' },
+              { key: 'cre53_fdt_grupo', header: 'Grupo', render: r => <Badge label={GRUPO_MP_LABEL[r.cre53_fdt_grupo]} variant={BADGE_GRUPO[r.cre53_fdt_grupo]} /> },
               {
-                key: 'cre53_unidad_almacen', header: 'Unidad / Factor',
+                key: 'cre53_fdt_unidad_almacen', header: 'Unidad / Factor',
                 render: r => (
                   <div className="text-xs">
-                    <span className="font-medium">{r.cre53_unidad_almacen}</span>
-                    {r.cre53_factor_conversion !== 1 && (
-                      <span className="text-gray-400 ml-1">({r.cre53_factor_conversion} {r.cre53_unidad_compra})</span>
+                    <span className="font-medium">{r.cre53_fdt_unidad_almacen}</span>
+                    {r.cre53_fdt_factor_conversion !== 1 && (
+                      <span className="text-gray-400 ml-1">({r.cre53_fdt_factor_conversion} {r.cre53_fdt_unidad_compra})</span>
                     )}
                   </div>
                 )
               },
               {
-                key: 'cre53_precio_base', header: 'Precio Base', align: 'right', sortable: true,
+                key: 'cre53_fdt_precio_base', header: 'Precio Base', align: 'right', sortable: true,
                 render: r => (
                   <div className="text-right text-xs">
-                    <div className="font-medium">{fmtPeso(r.cre53_precio_base)}/{r.cre53_unidad_compra}</div>
-                    {r.cre53_factor_conversion !== 1 && (
-                      <div className="text-gray-400">{fmtPeso(precioAlmacen(r.cre53_precio_base, r.cre53_factor_conversion))}/{r.cre53_unidad_almacen}</div>
+                    <div className="font-medium">{fmtPeso(r.cre53_fdt_precio_base)}/{r.cre53_fdt_unidad_compra}</div>
+                    {r.cre53_fdt_factor_conversion !== 1 && (
+                      <div className="text-gray-400">{fmtPeso(precioAlmacen(r.cre53_fdt_precio_base, r.cre53_fdt_factor_conversion))}/{r.cre53_fdt_unidad_almacen}</div>
                     )}
                   </div>
                 )
               },
               {
-                key: 'cre53_activo', header: 'Estado', align: 'center',
-                render: r => <Badge label={r.cre53_activo ? 'Activo' : 'Inactivo'} variant={r.cre53_activo ? 'success' : 'gray'} />
+                key: 'cre53_fdt_activo', header: 'Estado', align: 'center',
+                render: r => <Badge label={r.cre53_fdt_activo ? 'Activo' : 'Inactivo'} variant={r.cre53_fdt_activo ? 'success' : 'gray'} />
               },
               {
                 key: 'actions', header: '', align: 'right', width: '80px',
@@ -135,29 +135,29 @@ export default function MateriasPrimasPage() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="form-label">Código *</label>
-              <input className="form-input" value={form.cre53_codigo} onChange={e => f('cre53_codigo', e.target.value)} placeholder="1.0001" />
+              <input className="form-input" value={form.cre53_fdt_codigo} onChange={e => f('cre53_fdt_codigo', e.target.value)} placeholder="1.0001" />
             </div>
             <div>
               <label className="form-label">Alias / Nombre corto</label>
-              <input className="form-input" value={form.cre53_alias} onChange={e => f('cre53_alias', e.target.value)} placeholder="AZUCAR" />
+              <input className="form-input" value={form.cre53_fdt_alias} onChange={e => f('cre53_fdt_alias', e.target.value)} placeholder="AZUCAR" />
             </div>
           </div>
 
           <div>
             <label className="form-label">Descripción completa *</label>
-            <input className="form-input" value={form.cre53_descripcion} onChange={e => f('cre53_descripcion', e.target.value)} placeholder="AZUCAR ESTANDAR 25 KILOS" />
+            <input className="form-input" value={form.cre53_fdt_descripcion} onChange={e => f('cre53_fdt_descripcion', e.target.value)} placeholder="AZUCAR ESTANDAR 25 KILOS" />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="form-label">Grupo *</label>
-              <select className="form-select" value={form.cre53_grupo} onChange={e => f('cre53_grupo', Number(e.target.value))}>
+              <select className="form-select" value={form.cre53_fdt_grupo} onChange={e => f('cre53_fdt_grupo', Number(e.target.value))}>
                 {GRUPOS.map(g => <option key={g} value={g}>{GRUPO_MP_LABEL[g]}</option>)}
               </select>
             </div>
             <div>
               <label className="form-label">Unidad de Compra (base) *</label>
-              <input className="form-input" value={form.cre53_unidad_compra} onChange={e => f('cre53_unidad_compra', e.target.value)} placeholder="KGS, LTS, PZAS..." />
+              <input className="form-input" value={form.cre53_fdt_unidad_compra} onChange={e => f('cre53_fdt_unidad_compra', e.target.value)} placeholder="KGS, LTS, PZAS..." />
             </div>
           </div>
 
@@ -167,46 +167,46 @@ export default function MateriasPrimasPage() {
             <div className="grid grid-cols-3 gap-3">
               <div>
                 <label className="form-label">Unidad Almacén *</label>
-                <input className="form-input" value={form.cre53_unidad_almacen} onChange={e => f('cre53_unidad_almacen', e.target.value)} placeholder="BULTO, ROLLO..." />
+                <input className="form-input" value={form.cre53_fdt_unidad_almacen} onChange={e => f('cre53_fdt_unidad_almacen', e.target.value)} placeholder="BULTO, ROLLO..." />
               </div>
               <div>
                 <label className="form-label">Factor de Conversión *</label>
-                <input type="number" step="0.001" min="0.001" className="form-input" value={form.cre53_factor_conversion}
-                  onChange={e => f('cre53_factor_conversion', parseFloat(e.target.value) || 1)} />
-                <p className="text-xs text-gray-400 mt-0.5">1 {form.cre53_unidad_almacen} = {form.cre53_factor_conversion} {form.cre53_unidad_compra}</p>
+                <input type="number" step="0.001" min="0.001" className="form-input" value={form.cre53_fdt_factor_conversion}
+                  onChange={e => f('cre53_fdt_factor_conversion', parseFloat(e.target.value) || 1)} />
+                <p className="text-xs text-gray-400 mt-0.5">1 {form.cre53_fdt_unidad_almacen} = {form.cre53_fdt_factor_conversion} {form.cre53_fdt_unidad_compra}</p>
               </div>
               <div>
                 <label className="form-label">Unidad Venta</label>
-                <input className="form-input" value={form.cre53_unidad_venta} onChange={e => f('cre53_unidad_venta', e.target.value)} placeholder="BOLSAS..." />
+                <input className="form-input" value={form.cre53_fdt_unidad_venta} onChange={e => f('cre53_fdt_unidad_venta', e.target.value)} placeholder="BOLSAS..." />
               </div>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="form-label">Precio Base (por {form.cre53_unidad_compra}) *</label>
-              <input type="number" step="0.01" min="0" className="form-input" value={form.cre53_precio_base}
-                onChange={e => f('cre53_precio_base', parseFloat(e.target.value) || 0)} />
+              <label className="form-label">Precio Base (por {form.cre53_fdt_unidad_compra}) *</label>
+              <input type="number" step="0.01" min="0" className="form-input" value={form.cre53_fdt_precio_base}
+                onChange={e => f('cre53_fdt_precio_base', parseFloat(e.target.value) || 0)} />
             </div>
             <div>
-              <label className="form-label">Precio por {form.cre53_unidad_almacen}</label>
+              <label className="form-label">Precio por {form.cre53_fdt_unidad_almacen}</label>
               <input className="form-input bg-gray-50" readOnly
-                value={fmtPeso(precioAlmacen(form.cre53_precio_base, form.cre53_factor_conversion))} />
+                value={fmtPeso(precioAlmacen(form.cre53_fdt_precio_base, form.cre53_fdt_factor_conversion))} />
               <p className="text-xs text-gray-400 mt-0.5">Calculado automáticamente</p>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            <button type="button" onClick={() => f('cre53_activo', !form.cre53_activo)}
-              className={`flex items-center gap-2 text-sm ${form.cre53_activo ? 'text-success' : 'text-gray-400'}`}>
-              {form.cre53_activo ? <ToggleRight size={22} /> : <ToggleLeft size={22} />}
-              {form.cre53_activo ? 'Activo' : 'Inactivo'}
+            <button type="button" onClick={() => f('cre53_fdt_activo', !form.cre53_fdt_activo)}
+              className={`flex items-center gap-2 text-sm ${form.cre53_fdt_activo ? 'text-success' : 'text-gray-400'}`}>
+              {form.cre53_fdt_activo ? <ToggleRight size={22} /> : <ToggleLeft size={22} />}
+              {form.cre53_fdt_activo ? 'Activo' : 'Inactivo'}
             </button>
           </div>
 
           <div className="flex justify-end gap-3 pt-2">
             <button className="btn-secondary" onClick={() => setModalOpen(false)}>Cancelar</button>
-            <button className="btn-primary" onClick={handleSave} disabled={saving || !form.cre53_codigo || !form.cre53_descripcion}>
+            <button className="btn-primary" onClick={handleSave} disabled={saving || !form.cre53_fdt_codigo || !form.cre53_fdt_descripcion}>
               {saving ? 'Guardando...' : editing ? 'Guardar cambios' : 'Crear MP'}
             </button>
           </div>
@@ -215,7 +215,7 @@ export default function MateriasPrimasPage() {
 
       <ConfirmDialog
         open={!!deleteTarget}
-        message={`¿Eliminar "${deleteTarget?.cre53_descripcion}"? Esta acción no se puede deshacer.`}
+        message={`¿Eliminar "${deleteTarget?.cre53_fdt_descripcion}"? Esta acción no se puede deshacer.`}
         onConfirm={() => { remove.mutateAsync(deleteTarget!.cre53_materiaprimaid); setDeleteTarget(null); }}
         onCancel={() => setDeleteTarget(null)}
         loading={remove.isPending}

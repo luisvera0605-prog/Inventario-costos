@@ -19,10 +19,10 @@ export default function DashboardPage() {
   const comprasMap = useMemo(() => totalComprasPorMP(compras), [compras]);
   const fisicoMPMap = useMemo(() => invFisicoPorMP(invMP), [invMP]);
 
-  const totalValorMP = invMP.reduce((s, i) => s + i.cre53_valor, 0);
-  const totalValorPT = invPT.reduce((s, i) => s + (i.cre53_valor ?? 0), 0);
+  const totalValorMP = invMP.reduce((s, i) => s + i.cre53_fdt_valor, 0);
+  const totalValorPT = invPT.reduce((s, i) => s + (i.cre53_fdt_valor ?? 0), 0);
   const bodegasConCaptura = new Set(invPT.map(i => i._cre53_bodega_value)).size;
-  const totalBotellasProd = produccion.reduce((s, p) => s + p.cre53_cantidad_botellas, 0);
+  const totalBotellasProd = produccion.reduce((s, p) => s + p.cre53_fdt_cantidad_botellas, 0);
 
   const alertasMP = useMemo(() => mps.map(mp => {
     const consumo = consumoTeoricoMP(mp.cre53_materiaprimaid, recetas, produccion);
@@ -42,7 +42,7 @@ export default function DashboardPage() {
       <div className="mb-6">
         <h1 className="page-title">Dashboard</h1>
         {periodo ? (
-          <p className="text-sm text-gray-500 mt-1">Período activo: <strong className="text-primary">{periodo.cre53_nombre}</strong> · Corte: {periodo.cre53_fecha_corte?.split('T')[0]}</p>
+          <p className="text-sm text-gray-500 mt-1">Período activo: <strong className="text-primary">{periodo.cre53_fdt_nombre}</strong> · Corte: {periodo.cre53_fdt_fecha_corte?.split('T')[0]}</p>
         ) : (
           <div className="mt-2 inline-flex items-center gap-2 text-sm text-warning bg-yellow-50 border border-yellow-200 px-3 py-1.5 rounded-lg">
             <AlertTriangle size={14} /> Sin período activo — crea uno en Catálogos › Períodos
@@ -72,7 +72,7 @@ export default function DashboardPage() {
               <div key={a.mp.cre53_materiaprimaid} className={`flex items-center justify-between p-2.5 rounded-lg text-sm ${a.sem === 'danger' ? 'bg-red-50' : a.sem === 'warning' ? 'bg-yellow-50' : 'bg-green-50'}`}>
                 <div className="flex items-center gap-2 min-w-0">
                   {a.sem === 'success' ? <CheckCircle2 size={14} className="text-success shrink-0" /> : <AlertTriangle size={14} className={a.sem === 'danger' ? 'text-danger shrink-0' : 'text-warning shrink-0'} />}
-                  <span className="truncate text-gray-700">{a.mp.cre53_alias || a.mp.cre53_descripcion}</span>
+                  <span className="truncate text-gray-700">{a.mp.cre53_fdt_alias || a.mp.cre53_fdt_descripcion}</span>
                 </div>
                 <span className={`ml-3 text-xs font-semibold shrink-0 ${a.diff < 0 ? 'text-danger' : a.diff > 0 ? 'text-warning' : 'text-success'}`}>
                   {fmtPct(a.pct)}
@@ -92,8 +92,8 @@ export default function DashboardPage() {
                 <div key={b.cre53_bodegaid} className={`flex items-center justify-between p-2.5 rounded-lg ${registros > 0 ? 'bg-green-50' : 'bg-gray-50'}`}>
                   <div className="flex items-center gap-2">
                     <Building2 size={14} className={registros > 0 ? 'text-success' : 'text-gray-400'} />
-                    <span className="text-sm text-gray-700">{b.cre53_nombre}</span>
-                    <span className="text-xs text-gray-400">({b.cre53_tipo === 1 ? 'MP+PT' : 'PT'})</span>
+                    <span className="text-sm text-gray-700">{b.cre53_fdt_nombre}</span>
+                    <span className="text-xs text-gray-400">({b.cre53_fdt_tipo === 1 ? 'MP+PT' : 'PT'})</span>
                   </div>
                   {registros > 0 ? <span className="badge-success">{registros} SKUs</span> : <span className="badge-warning">Sin captura</span>}
                 </div>
