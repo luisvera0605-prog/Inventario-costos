@@ -88,7 +88,7 @@ export default function InventarioMPPage() {
     <div>
       <PageHeader
         title="Inventario — Materia Prima"
-        subtitle={periodo ? `Período: ${periodo.cre53_fdt_nombre}` : 'Sin período activo'}
+        subtitle={periodo ? `Período: ${periodo.cre53_id}` : 'Sin período activo'}
         action={tab === 'captura' ? <button className="btn-primary" onClick={openCreate} disabled={!periodoId}><Plus size={16} />Capturar</button> : undefined}
       />
 

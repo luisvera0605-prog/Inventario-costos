@@ -36,7 +36,7 @@ export default function CosteoPage() {
     <div>
       <PageHeader
         title="Costeo Teórico"
-        subtitle={`Costo de MP por botella · Precios actuales del catálogo${periodo ? ` · ${periodo.cre53_fdt_nombre}` : ''}`}
+        subtitle={`Costo de MP por botella · Precios actuales del catálogo${periodo ? ` · ${periodo.cre53_id}` : ''}`}
       />
 
       <div className="mb-4 p-4 bg-blue-50 border border-blue-100 rounded-lg text-sm text-blue-700">

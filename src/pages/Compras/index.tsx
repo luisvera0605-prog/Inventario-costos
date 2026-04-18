@@ -41,7 +41,7 @@ export default function ComprasPage() {
     <div>
       <PageHeader
         title="Compras de Materia Prima"
-        subtitle={periodo?.cre53_fdt_nombre ?? 'Sin período activo'}
+        subtitle={periodo?.cre53_id ?? 'Sin período activo'}
         action={<button className="btn-primary" onClick={() => { setForm({ _cre53_periodo_value: periodoId ?? '', cre53_fdt_cantidad_base: 0, cre53_fdt_precio_unitario: 0, cre53_fdt_fecha: new Date().toISOString().split('T')[0] }); setModalOpen(true); }} disabled={!periodoId}><Plus size={16} />Nueva compra</button>}
       />
       <div className="grid grid-cols-3 gap-4 mb-6">

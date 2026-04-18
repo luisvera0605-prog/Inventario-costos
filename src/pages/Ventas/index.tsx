@@ -40,7 +40,7 @@ export default function VentasPage() {
     <div>
       <PageHeader
         title="Ventas y Despachos"
-        subtitle={periodo?.cre53_fdt_nombre ?? 'Sin período activo'}
+        subtitle={periodo?.cre53_id ?? 'Sin período activo'}
         action={<button className="btn-primary" onClick={() => { setForm({ _cre53_periodo_value: periodoId ?? '', cre53_fdt_cantidad: 0, cre53_fdt_fecha: new Date().toISOString().split('T')[0] }); setModalOpen(true); }} disabled={!periodoId}><Plus size={16} />Registrar venta</button>}
       />
       <div className="grid grid-cols-3 gap-4 mb-6">

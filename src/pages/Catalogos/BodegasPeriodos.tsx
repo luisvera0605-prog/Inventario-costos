@@ -35,7 +35,7 @@ export function BodegasPage() {
       {isLoading ? <Spinner /> : (
         <div className="card p-0 overflow-hidden">
           <DataTable data={bodegas} rowKey={r => r.cre53_bodegaid} columns={[
-            { key: 'cre53_fdt_nombre', header: 'Nombre', sortable: true },
+            { key: 'cre53_id', header: 'Nombre', sortable: true },
             { key: 'cre53_fdt_tipo', header: 'Tipo', render: r => <Badge label={TIPO_BODEGA_LABEL[r.cre53_fdt_tipo]} variant={r.cre53_fdt_tipo === 1 ? 'info' : 'gray'} /> },
             { key: 'cre53_fdt_ubicacion', header: 'Ubicación', render: r => r.cre53_fdt_ubicacion || '—' },
             { key: 'cre53_fdt_activo', header: 'Estado', render: r => <Badge label={r.cre53_fdt_activo ? 'Activa' : 'Inactiva'} variant={r.cre53_fdt_activo ? 'success' : 'gray'} /> },
@@ -79,7 +79,7 @@ import { Lock, Unlock } from 'lucide-react';
 
 const defaultPeriodo = (): PeriodoForm => {
   const now = new Date();
-  return { cre53_fdt_nombre: `${MES_LABEL[now.getMonth() + 1]} ${now.getFullYear()}`, cre53_fdt_anio: now.getFullYear(), cre53_fdt_mes: now.getMonth() + 1, cre53_fdt_fecha_inicio: `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`, cre53_fdt_fecha_corte: '', cre53_fdt_cerrado: false };
+  return { cre53_id: `${MES_LABEL[now.getMonth() + 1]} ${now.getFullYear()}`, cre53_fdt_anio: now.getFullYear(), cre53_fdt_mes: now.getMonth() + 1, cre53_fdt_fecha_inicio: `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`, cre53_fdt_fecha_corte: '', cre53_fdt_cerrado: false };
 };
 
 export function PeriodosPage() {
@@ -100,7 +100,7 @@ export function PeriodosPage() {
       {isLoading ? <Spinner /> : (
         <div className="card p-0 overflow-hidden">
           <DataTable data={periodos} rowKey={r => r.cre53_periodoid} columns={[
-            { key: 'cre53_fdt_nombre', header: 'Período', render: r => <span className="font-medium">{r.cre53_fdt_nombre}</span> },
+            { key: 'cre53_id', header: 'Período', render: r => <span className="font-medium">{r.cre53_id}</span> },
             { key: 'cre53_fdt_anio', header: 'Año', align: 'center' },
             { key: 'cre53_fdt_mes', header: 'Mes', render: r => MES_LABEL[r.cre53_fdt_mes] },
             { key: 'cre53_fdt_fecha_inicio', header: 'Inicio', render: r => fmtFecha(r.cre53_fdt_fecha_inicio) },
@@ -117,7 +117,7 @@ export function PeriodosPage() {
       )}
       <Modal open={modalOpen} onClose={() => setModalOpen(false)} title="Nuevo Período" size="sm">
         <div className="space-y-4">
-          <div><label className="form-label">Nombre *</label><input className="form-input" value={form.cre53_fdt_nombre} onChange={e => f('cre53_fdt_nombre', e.target.value)} /></div>
+          <div><label className="form-label">Nombre *</label><input className="form-input" value={form.cre53_id} onChange={e => f('cre53_id', e.target.value)} /></div>
           <div className="grid grid-cols-2 gap-3">
             <div><label className="form-label">Año</label><input type="number" className="form-input" value={form.cre53_fdt_anio} onChange={e => f('cre53_fdt_anio', parseInt(e.target.value))} /></div>
             <div><label className="form-label">Mes</label>
@@ -132,7 +132,7 @@ export function PeriodosPage() {
           </div>
           <div className="flex justify-end gap-3 pt-2">
             <button className="btn-secondary" onClick={() => setModalOpen(false)}>Cancelar</button>
-            <button className="btn-primary" onClick={handleSave} disabled={create.isPending || !form.cre53_fdt_nombre}>{create.isPending ? 'Guardando...' : 'Crear'}</button>
+            <button className="btn-primary" onClick={handleSave} disabled={create.isPending || !form.cre53_id}>{create.isPending ? 'Guardando...' : 'Crear'}</button>
           </div>
         </div>
       </Modal>

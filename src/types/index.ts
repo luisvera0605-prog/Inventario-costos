@@ -37,7 +37,7 @@ export interface SKU {
 
 export interface Periodo {
   cre53_periodoid: string;
-  cre53_fdt_nombre: string;
+  cre53_id: string;
   cre53_fdt_anio: number;
   cre53_fdt_mes: number;
   cre53_fdt_fecha_inicio: string;

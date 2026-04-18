@@ -68,7 +68,7 @@ export default function InventarioPTPage() {
     <div>
       <PageHeader
         title="Inventario — Producto Terminado"
-        subtitle={periodo ? `Período: ${periodo.cre53_fdt_nombre} · ${bodegasConCaptura} de ${bodegas.length} bodegas capturadas` : 'Sin período activo'}
+        subtitle={periodo ? `Período: ${periodo.cre53_id} · ${bodegasConCaptura} de ${bodegas.length} bodegas capturadas` : 'Sin período activo'}
         action={<button className="btn-primary" onClick={openCreate} disabled={!periodoId}><Plus size={16} />Capturar</button>}
       />
 

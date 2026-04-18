@@ -42,7 +42,7 @@ export default function DashboardPage() {
       <div className="mb-6">
         <h1 className="page-title">Dashboard</h1>
         {periodo ? (
-          <p className="text-sm text-gray-500 mt-1">Período activo: <strong className="text-primary">{periodo.cre53_fdt_nombre}</strong> · Corte: {periodo.cre53_fdt_fecha_corte?.split('T')[0]}</p>
+          <p className="text-sm text-gray-500 mt-1">Período activo: <strong className="text-primary">{periodo.cre53_id}</strong> · Corte: {periodo.cre53_fdt_fecha_corte?.split('T')[0]}</p>
         ) : (
           <div className="mt-2 inline-flex items-center gap-2 text-sm text-warning bg-yellow-50 border border-yellow-200 px-3 py-1.5 rounded-lg">
             <AlertTriangle size={14} /> Sin período activo — crea uno en Catálogos › Períodos
