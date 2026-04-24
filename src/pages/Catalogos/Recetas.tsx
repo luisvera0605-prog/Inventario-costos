@@ -115,7 +115,7 @@ export default function RecetasPage() {
                           const mp = mpMap[r._cre53_mp_value];
                           return (
                             <tr key={r.cre53_recetaid} className="hover:bg-gray-50">
-                              <td className="px-4 py-2.5 text-sm text-gray-800">{(r as any).cre53_fdt_mp?.cre53_fdt_codigo ?? mp?.cre53_fdt_codigo ?? mp?.cre53_fdt_alias ?? r._cre53_mp_value}</td>
+                              <td className="px-4 py-2.5 text-sm text-gray-800">{(r as any).cre53_fdt_mp?.cre53_fdt_alias ?? mp?.cre53_fdt_alias ?? (r as any).cre53_fdt_mp?.cre53_fdt_codigo ?? mp?.cre53_fdt_codigo ?? r._cre53_mp_value}</td>
                               <td className="px-4 py-2.5 text-sm text-right font-mono">{fmtNum(r.cre53_fdt_qty_por_litro, 6)}</td>
                               <td className="px-4 py-2.5 text-sm text-right font-mono text-primary">{fmtNum(r.cre53_fdt_qty_por_botella, 6)}</td>
                               <td className="px-4 py-2.5 text-xs text-gray-500">{r.cre53_fdt_unidad}</td>
