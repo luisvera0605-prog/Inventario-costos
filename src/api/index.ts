@@ -85,7 +85,7 @@ export const apiPeriodos = {
 export const apiRecetas = {
   getBySKU: (skuId: string, token: string) =>
     fetchAllPaginated<LineaReceta>(
-      `${BASE}/${E_RECETA}?$filter=_cre53_sku_value eq '${skuId}' and cre53_fdt_activo eq true&$orderby=cre53_fdt_tipo_insumo`,
+      `${BASE}/${E_RECETA}?$filter=_cre53_fdt_sku_value eq ${skuId} and cre53_fdt_activo eq true&$orderby=cre53_fdt_tipo_insumo`,
       token
     ),
   getAll: (token: string) =>
@@ -99,7 +99,7 @@ export const apiRecetas = {
 export const apiInventarioMP = {
   getByPeriodo: (periodoId: string, token: string) =>
     fetchAllPaginated<InventarioMP>(
-      `${BASE}/${E_INV_MP}?$filter=_cre53_periodo_value eq '${periodoId}'&$orderby=_cre53_mp_value`,
+      `${BASE}/${E_INV_MP}?$filter=_cre53_periodo_value eq ${periodoId}&$orderby=_cre53_mp_value`,
       token
     ),
   create: (data: InvMPForm, token: string) => dvCreate(E_INV_MP, data, token),
@@ -111,12 +111,12 @@ export const apiInventarioMP = {
 export const apiInventarioPT = {
   getByPeriodo: (periodoId: string, token: string) =>
     fetchAllPaginated<InventarioPT>(
-      `${BASE}/${E_INV_PT}?$filter=_cre53_periodo_value eq '${periodoId}'&$orderby=_cre53_bodega_value,_cre53_sku_value`,
+      `${BASE}/${E_INV_PT}?$filter=_cre53_periodo_value eq ${periodoId}&$orderby=_cre53_bodega_value,_cre53_sku_value`,
       token
     ),
   getByBodegaPeriodo: (bodegaId: string, periodoId: string, token: string) =>
     fetchAllPaginated<InventarioPT>(
-      `${BASE}/${E_INV_PT}?$filter=_cre53_periodo_value eq '${periodoId}' and _cre53_bodega_value eq '${bodegaId}'`,
+      `${BASE}/${E_INV_PT}?$filter=_cre53_periodo_value eq ${periodoId} and _cre53_bodega_value eq ${bodegaId}`,
       token
     ),
   create: (data: InvPTForm, token: string) => dvCreate(E_INV_PT, data, token),
@@ -128,7 +128,7 @@ export const apiInventarioPT = {
 export const apiProduccion = {
   getByPeriodo: (periodoId: string, token: string) =>
     fetchAllPaginated<Produccion>(
-      `${BASE}/${E_PROD}?$filter=_cre53_periodo_value eq '${periodoId}'&$orderby=_cre53_sku_value,cre53_fdt_semana`,
+      `${BASE}/${E_PROD}?$filter=_cre53_periodo_value eq ${periodoId}&$orderby=_cre53_sku_value,cre53_fdt_semana`,
       token
     ),
   create: (data: ProduccionForm, token: string) => dvCreate(E_PROD, data, token),
@@ -140,7 +140,7 @@ export const apiProduccion = {
 export const apiCompras = {
   getByPeriodo: (periodoId: string, token: string) =>
     fetchAllPaginated<CompraMP>(
-      `${BASE}/${E_COMPRA}?$filter=_cre53_periodo_value eq '${periodoId}'&$orderby=cre53_fdt_fecha desc`,
+      `${BASE}/${E_COMPRA}?$filter=_cre53_periodo_value eq ${periodoId}&$orderby=cre53_fdt_fecha desc`,
       token
     ),
   create: (data: CompraForm, token: string) => dvCreate(E_COMPRA, data, token),
@@ -152,12 +152,12 @@ export const apiCompras = {
 export const apiVentas = {
   getByPeriodo: (periodoId: string, token: string) =>
     fetchAllPaginated<Venta>(
-      `${BASE}/${E_VENTA}?$filter=_cre53_periodo_value eq '${periodoId}'&$orderby=cre53_fdt_fecha desc`,
+      `${BASE}/${E_VENTA}?$filter=_cre53_periodo_value eq ${periodoId}&$orderby=cre53_fdt_fecha desc`,
       token
     ),
   getByBodegaPeriodo: (bodegaId: string, periodoId: string, token: string) =>
     fetchAllPaginated<Venta>(
-      `${BASE}/${E_VENTA}?$filter=_cre53_periodo_value eq '${periodoId}' and _cre53_bodega_value eq '${bodegaId}'`,
+      `${BASE}/${E_VENTA}?$filter=_cre53_periodo_value eq ${periodoId} and _cre53_bodega_value eq ${bodegaId}`,
       token
     ),
   create: (data: VentaForm, token: string) => dvCreate(E_VENTA, data, token),
