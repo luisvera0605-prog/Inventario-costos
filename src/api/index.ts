@@ -85,11 +85,11 @@ export const apiPeriodos = {
 export const apiRecetas = {
   getBySKU: (skuId: string, token: string) =>
     fetchAllPaginated<LineaReceta>(
-      `${BASE}/${E_RECETA}?$filter=_cre53_fdt_sku_value eq ${skuId} and cre53_fdt_activo eq true&$orderby=cre53_fdt_tipo_insumo`,
+      `${BASE}/${E_RECETA}?$filter=_cre53_fdt_sku_value eq ${skuId} and cre53_fdt_activo eq true&$orderby=cre53_fdt_tipo_insumo&$expand=cre53_fdt_mp($select=cre53_fdt_codigo,cre53_fdt_alias,cre53_fdt_precio_base,cre53_fdt_unidad_almacen)`,
       token
     ),
   getAll: (token: string) =>
-    fetchAllPaginated<LineaReceta>(`${BASE}/${E_RECETA}?$filter=cre53_fdt_activo eq true`, token),
+    fetchAllPaginated<LineaReceta>(`${BASE}/${E_RECETA}?$filter=cre53_fdt_activo eq true&$expand=cre53_fdt_mp($select=cre53_fdt_codigo,cre53_fdt_alias,cre53_fdt_precio_base,cre53_fdt_unidad_almacen),cre53_fdt_sku($select=cre53_fdt_presentacion,cre53_fdt_mililitros)`, token),
   create: (data: RecetaForm, token: string) => dvCreate(E_RECETA, data, token),
   update: (id: string, data: Partial<RecetaForm>, token: string) => dvUpdate(E_RECETA, id, data, token),
   delete: (id: string, token: string) => dvDelete(E_RECETA, id, token),
